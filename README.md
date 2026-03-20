@@ -425,7 +425,7 @@ MIT License - See LICENSE file for details
 
 For questions or support:
 - GitHub Issues: [Report a bug or request a feature]
-- Email: contact@onboarding-engine.dev
+- Email: vaishnav.koka@iitgn.ac.in, jigar.mahedu@iitgn.ac.in, jaya.chaudhary@iitgn.ac.in
 
 ## Acknowledgments
 
