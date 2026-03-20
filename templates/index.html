@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Adaptive Onboarding Engine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎯 AI-Adaptive Onboarding Engine</h1>
+            <p class="tagline">Personalized Learning Pathways for Career Growth</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Input Section -->
+            <section class="input-section" id="inputSection">
+                <div class="form-container">
+                    <h2>Analyze Your Skills & Career Path</h2>
+                    
+                    <form id="analysisForm">
+                        <!-- Resume Section -->
+                        <div class="form-group">
+                            <label for="resume">Your Resume/CV</label>
+                            <textarea 
+                                id="resume" 
+                                name="resume"
+                                placeholder="Paste your resume or CV here..."
+                                rows="8"
+                                required
+                            ></textarea>
+                            <small>Include your skills, experience, and proficiency levels</small>
+                        </div>
+
+                        <!-- Job Description Section -->
+                        <div class="form-group">
+                            <label for="jobDescription">Target Job Description</label>
+                            <textarea 
+                                id="jobDescription" 
+                                name="jobDescription"
+                                placeholder="Paste the job description here..."
+                                rows="8"
+                                required
+                            ></textarea>
+                            <small>Include required skills and qualifications</small>
+                        </div>
+
+                        <!-- Job Category -->
+                        <div class="form-group">
+                            <label for="jobCategory">Job Category</label>
+                            <select id="jobCategory" name="jobCategory" required>
+                                <option value="">-- Select Category --</option>
+                                {% for category in job_categories %}
+                                <option value="{{ category }}">{{ category }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Training Duration -->
+                        <div class="form-group">
+                            <label for="maxWeeks">Maximum Training Duration (weeks)</label>
+                            <input 
+                                type="number" 
+                                id="maxWeeks" 
+                                name="maxWeeks"
+                                min="1" 
+                                max="52" 
+                                value="12"
+                                required
+                            >
+                            <small>How many weeks can you dedicate to training?</small>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-primary" id="analyzeBtn">
+                                📊 Analyze Skills
+                            </button>
+                            <button type="reset" class="btn btn-secondary">Clear</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div class="loading-container" id="loadingContainer" style="display: none;">
+                <div class="spinner"></div>
+                <p>Analyzing your profile and generating personalized pathway...</p>
+            </div>
+
+            <!-- Error Display -->
+            <div class="error-container" id="errorContainer" style="display: none;">
+                <div class="error-content">
+                    <h3>Analysis Error</h3>
+                    <p id="errorMessage"></p>
+                    <button class="btn btn-secondary" onclick="location.reload()">Try Again</button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <!-- Match Score Card -->
+                <div class="result-card match-card">
+                    <div class="match-gauge">
+                        <svg viewBox="0 0 200 200" class="gauge-svg">
+                            <circle cx="100" cy="100" r="90" class="gauge-bg"></circle>
+                            <circle 
+                                cx="100" 
+                                cy="100" 
+                                r="90" 
+                                class="gauge-progress" 
+                                id="gaugeCircle"
+                            ></circle>
+                        </svg>
+                        <div class="match-text">
+                            <span class="match-score" id="matchScore">0</span>
+                            <span class="match-label">% Match</span>
+                        </div>
+                    </div>
+                    <div class="match-details">
+                        <h3>Overall Fit Assessment</h3>
+                        <p id="matchDescription"></p>
+                    </div>
+                </div>
+
+                <!-- Skills Summary -->
+                <div class="result-card">
+                    <h3>📚 Skills Overview</h3>
+                    <div class="skills-grid">
+                        <div class="skill-box">
+                            <span class="skill-label">Your Skills</span>
+                            <span class="skill-value" id="yourSkillsCount">0</span>
+                        </div>
+                        <div class="skill-box">
+                            <span class="skill-label">Required Skills</span>
+                            <span class="skill-value" id="requiredSkillsCount">0</span>
+                        </div>
+                        <div class="skill-box">
+                            <span class="skill-label">Skill Gaps</span>
+                            <span class="skill-value critical" id="gapCount">0</span>
+                        </div>
+                        <div class="skill-box">
+                            <span class="skill-label">Your Score</span>
+                            <span class="skill-value" id="yourScore">0</span>/100
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gap Analysis Chart -->
+                <div class="result-card">
+                    <h3>📊 Skill Gap Analysis</h3>
+                    <div class="chart-container">
+                        <canvas id="gapChart"></canvas>
+                    </div>
+                    <div class="gap-details" id="gapDetails"></div>
+                </div>
+
+                <!-- Learning Pathway -->
+                <div class="result-card">
+                    <h3>🚀 Personalized Learning Pathway</h3>
+                    <div class="pathway-stats">
+                        <div class="stat">
+                            <span class="stat-label">Total Modules</span>
+                            <span class="stat-value" id="totalModules">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Training Hours</span>
+                            <span class="stat-value" id="totalHours">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Duration</span>
+                            <span class="stat-value" id="trainingWeeks">0</span> weeks
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Success Rate</span>
+                            <span class="stat-value" id="successRate">0</span>%
+                        </div>
+                    </div>
+
+                    <div class="modules-list" id="modulesList"></div>
+
+                    <div class="export-buttons">
+                        <button class="btn btn-secondary" id="exportCsvBtn">
+                            📥 Export as CSV
+                        </button>
+                        <button class="btn btn-secondary" id="downloadReportBtn">
+                            📄 Download Report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="result-card">
+                    <h3>💡 Recommendations</h3>
+                    <div class="recommendations">
+                        <div class="rec-section">
+                            <h4>Immediate Actions</h4>
+                            <ul id="immediateActions"></ul>
+                        </div>
+                        <div class="rec-section">
+                            <h4>Your Strengths</h4>
+                            <ul id="strengthsList"></ul>
+                        </div>
+                        <div class="rec-section">
+                            <h4>Areas to Develop</h4>
+                            <ul id="areasList"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reasoning Trace -->
+                <div class="result-card reasoning-trace">
+                    <h3>🔍 Reasoning Trace (How We Generated This)</h3>
+                    <div class="trace-content">
+                        <p><strong>Extraction Logic:</strong> <span id="extractionLogic"></span></p>
+                        <p><strong>Gap Identification:</strong> <span id="gapLogic"></span></p>
+                        <p><strong>Pathway Generation:</strong> <span id="pathwayLogic"></span></p>
+                        <div class="trace-decisions" id="traceDecisions"></div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="window.print()">
+                        🖨️ Print Results
+                    </button>
+                    <button class="btn btn-secondary" onclick="location.reload()">
+                        🔄 New Analysis
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 AI-Adaptive Onboarding Engine | Powered by Intelligent Skill Analysis</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
