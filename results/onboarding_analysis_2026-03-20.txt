@@ -1,0 +1,44 @@
+================================================================================
+ADAPTIVE ONBOARDING ANALYSIS REPORT
+================================================================================
+Generated: 2026-03-21T00:30:45.305943
+Target Position Category: ENGINEERING
+
+OVERALL FIT ASSESSMENT
+--------------------------------------------------------------------------------
+Match Score: 28.2%
+
+YOUR CURRENT SKILLS
+--------------------------------------------------------------------------------
+Technical Skills: go, r
+Soft Skills: quality assurance
+Overall Skill Score: 16.7/100
+
+SKILL GAP ANALYSIS
+--------------------------------------------------------------------------------
+Total Skill Gaps: 1
+  - Critical: 1
+  - Moderate: 0
+  - Minor: 0
+
+PERSONALIZED LEARNING PATHWAY
+--------------------------------------------------------------------------------
+Total Modules: 0
+Total Hours: 0
+Estimated Duration: 0 weeks
+Estimated Success Rate: 75.0%
+
+RECOMMENDATIONS
+--------------------------------------------------------------------------------
+→ Focus on 1 critical skill gaps: windows, quality assurance
+
+Strengths to Leverage:
+  ✓ You have 3 relevant skills. Leverage these as foundation.
+
+Areas to Develop:
+  • Develop 1 skill areas through structured learning
+  • Recommended pathway: 0 modules over 0 weeks
+
+Training Timeline: 0 weeks (0 hours) at 40 hours/week
+
+================================================================================

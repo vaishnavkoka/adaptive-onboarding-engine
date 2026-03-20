@@ -23,28 +23,48 @@
                     <form id="analysisForm">
                         <!-- Resume Section -->
                         <div class="form-group">
-                            <label for="resume">Your Resume/CV</label>
+                            <label>📄 Your Resume/CV (Upload or Paste)</label>
+                            <div class="file-input-wrapper">
+                                <input 
+                                    type="file" 
+                                    id="resumeFile" 
+                                    accept=".pdf,.docx,.txt,.doc"
+                                    class="file-input"
+                                />
+                                <label for="resumeFile" class="file-label">📁 Upload Resume (PDF, DOCX, TXT)</label>
+                            </div>
+                            <div class="divider">OR</div>
                             <textarea 
                                 id="resume" 
                                 name="resume"
-                                placeholder="Paste your resume or CV here..."
-                                rows="8"
-                                required
+                                placeholder="Paste your resume text here..."
+                                rows="6"
                             ></textarea>
-                            <small>Include your skills, experience, and proficiency levels</small>
+                            <small>Formats: PDF, DOCX, TXT (auto-extracted) or raw text</small>
+                            <p id="resumeFileName" style="color: #10b981; margin-top: 0.5rem;"></p>
                         </div>
 
                         <!-- Job Description Section -->
                         <div class="form-group">
-                            <label for="jobDescription">Target Job Description</label>
+                            <label>📋 Target Job Description (Upload or Paste)</label>
+                            <div class="file-input-wrapper">
+                                <input 
+                                    type="file" 
+                                    id="jobFile" 
+                                    accept=".pdf,.docx,.txt,.doc"
+                                    class="file-input"
+                                />
+                                <label for="jobFile" class="file-label">📁 Upload Job Description (PDF, DOCX, TXT)</label>
+                            </div>
+                            <div class="divider">OR</div>
                             <textarea 
                                 id="jobDescription" 
                                 name="jobDescription"
-                                placeholder="Paste the job description here..."
-                                rows="8"
-                                required
+                                placeholder="Paste the job description text here..."
+                                rows="6"
                             ></textarea>
-                            <small>Include required skills and qualifications</small>
+                            <small>Formats: PDF, DOCX, TXT (auto-extracted) or raw text</small>
+                            <p id="jobFileName" style="color: #10b981; margin-top: 0.5rem;"></p>
                         </div>
 
                         <!-- Job Category -->

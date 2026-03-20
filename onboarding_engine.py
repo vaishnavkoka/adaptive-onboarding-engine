@@ -1,21 +1,56 @@
 """
 Complete Adaptive Onboarding Engine - Integration Layer
+Enhanced with LLM-based skill extraction
 """
 
 from typing import Dict, List, Tuple
 import json
 from datetime import datetime
-from skill_extractor import SkillExtractor
 from adaptive_pathway import SkillGapAnalyzer, AdaptivePathwayGenerator, CourseDatabase
+
+# Try to use LLM-enhanced skill extractor, fall back to base if unavailable
+try:
+    from lightweight_llm_extractor_v2 import get_llm_extractor
+    skill_extractor_instance = get_llm_extractor()
+except ImportError:
+    try:
+        from lightweight_llm_extractor import get_llm_extractor
+        skill_extractor_instance = get_llm_extractor()
+    except ImportError:
+        from skill_extractor import SkillExtractor
+        skill_extractor_instance = SkillExtractor()
 
 
 class AdaptiveOnboardingEngine:
     """Main orchestrator for the adaptive onboarding system"""
     
     def __init__(self):
-        self.skill_extractor = SkillExtractor()
+        # Use LLM-enhanced or fallback to basic skill extractor
+        global skill_extractor_instance
+        self.skill_extractor = skill_extractor_instance
         self.gap_analyzer = SkillGapAnalyzer()
         self.pathway_generator = AdaptivePathwayGenerator()
+    
+    def _extract_skills_with_llm(self, text: str) -> Dict[str, str]:
+        """
+        Extract skills using LLM if available, else use standard method
+        
+        Args:
+            text: Input text to extract skills from
+        
+        Returns:
+            Dictionary mapping skill names to proficiency levels
+        """
+        # Try semantic extraction first if available
+        if hasattr(self.skill_extractor, 'extract_skills_semantic'):
+            try:
+                return self.skill_extractor.extract_skills_semantic(text)
+            except Exception as e:
+                print(f"LLM semantic extraction failed: {e}. Falling back to standard extraction.")
+                return self.skill_extractor.extract_with_proficiency(text)
+        
+        # Fall back to standard extraction
+        return self.skill_extractor.extract_with_proficiency(text)
     
     def analyze_resume_and_job(self, 
                               resume_text: str,
@@ -41,8 +76,8 @@ class AdaptiveOnboardingEngine:
             'max_weeks': max_weeks,
         }
         
-        # Step 1: Extract skills from resume
-        resume_skills_with_prof = self.skill_extractor.extract_with_proficiency(resume_text)
+        # Step 1: Extract skills from resume (using LLM if available)
+        resume_skills_with_prof = self._extract_skills_with_llm(resume_text)
         resume_technical_skills, resume_soft_skills = self.skill_extractor.extract_skills(resume_text)
         
         analysis_result['resume_analysis'] = {
@@ -53,9 +88,9 @@ class AdaptiveOnboardingEngine:
             'skill_score': self.skill_extractor.score_skills(resume_skills_with_prof),
         }
         
-        # Step 2: Extract skills from job description
+        # Step 2: Extract skills from job description (using LLM if available)
         job_tech_skills, job_soft_skills = self.skill_extractor.extract_skills(job_description)
-        job_skills_with_prof = self.skill_extractor.extract_with_proficiency(job_description)
+        job_skills_with_prof = self._extract_skills_with_llm(job_description)
         
         analysis_result['job_description_analysis'] = {
             'required_technical_skills': list(job_tech_skills),
@@ -178,8 +213,18 @@ class AdaptiveOnboardingEngine:
     
     def _generate_reasoning_trace(self, analysis: Dict) -> Dict:
         """Generate detailed reasoning for the recommendations"""
+        
+        # Determine extraction method used
+        extraction_method = "keyword matching and context analysis"
+        if hasattr(self.skill_extractor, 'use_semantic_search'):
+            if self.skill_extractor.use_semantic_search:
+                extraction_method = "semantic similarity-based extraction using sentence-transformers"
+        elif hasattr(self.skill_extractor, 'use_llm'):
+            if self.skill_extractor.use_llm:
+                extraction_method = "zero-shot classification using transformer models"
+        
         traces = {
-            'extraction_logic': "Skills extracted using keyword matching and context analysis",
+            'extraction_logic': f"Skills extracted using {extraction_method} with proficiency level inference",
             'gap_identification_logic': "Gaps identified by comparing required vs current proficiency levels",
             'pathway_generation_logic': "Pathway generated using difficulty-based sequencing with prerequisite tracking",
             'key_decisions': [],

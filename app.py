@@ -23,35 +23,131 @@ engine = AdaptiveOnboardingEngine()
 
 # Job categories available
 JOB_CATEGORIES = [
-    'ENGINEERING',
-    'SALES',
-    'HR',
-    'FINANCE',
-    'IT',
-    'HEALTHCARE',
+    'ACCOUNTANT',
+    'ADVOCATE',
+    'AGRICULTURE',
+    'APPAREL',
+    'ARTS',
+    'AUTOMOBILE',
+    'AVIATION',
+    'BANKING',
+    'BPO',
     'BUSINESS-DEVELOPMENT',
-    'EDUCATION',
+    'CHEF',
+    'CONSTRUCTION',
+    'CONSULTANT',
+    'DESIGNER',
+    'DIGITAL-MEDIA',
+    'ENGINEERING',
+    'FINANCE',
+    'FITNESS',
+    'HEALTHCARE',
+    'HR',
+    'INFORMATION-TECHNOLOGY',
+    'PUBLIC-RELATIONS',
+    'SALES',
+    'TEACHER',
 ]
 
+# Supported file extensions
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'docx', 'doc'}
+
+def allowed_file(filename):
+    """Check if file extension is allowed"""
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def extract_text_from_file(file):
-    """Extract text from uploaded file (txt or may need to extend for PDF)"""
+    """Extract text from uploaded file (supports TXT, PDF, DOCX)"""
     try:
-        if file.filename.endswith('.txt'):
-            return file.read().decode('utf-8')
-        elif file.filename.endswith('.pdf'):
-            # For now, return instruction to use PDF text
-            return "[PDF file - please convert to text format for best results]"
+        filename = file.filename.lower()
+        
+        if filename.endswith('.txt'):
+            return file.read().decode('utf-8', errors='ignore')
+        
+        elif filename.endswith('.pdf'):
+            try:
+                import PyPDF2
+                pdf_reader = PyPDF2.PdfReader(io.BytesIO(file.read()))
+                text = ""
+                for page in pdf_reader.pages:
+                    text += page.extract_text() + "\n"
+                return text
+            except ImportError:
+                return "[PDF file detected - PDF parsing requires PyPDF2 library. Please install: pip install PyPDF2]"
+            except Exception as e:
+                return f"Error reading PDF: {str(e)}"
+        
+        elif filename.endswith(('.docx', '.doc')):
+            try:
+                from docx import Document
+                doc = Document(io.BytesIO(file.read()))
+                text = "\n".join([para.text for para in doc.paragraphs])
+                return text
+            except ImportError:
+                return "[DOCX file detected - DOCX parsing requires python-docx library. Please install: pip install python-docx]"
+            except Exception as e:
+                return f"Error reading DOCX: {str(e)}"
+        
         else:
-            return file.read().decode('utf-8')
+            # Try to read as text
+            return file.read().decode('utf-8', errors='ignore')
+    
     except Exception as e:
         return f"Error reading file: {str(e)}"
+
 
 
 @app.route('/')
 def index():
     """Main home page"""
     return render_template('index.html', job_categories=JOB_CATEGORIES)
+
+
+@app.route('/api/extract-text', methods=['POST'])
+def extract_text():
+    """Extract text from uploaded file (PDF, DOCX, TXT)"""
+    try:
+        if 'file' not in request.files:
+            return jsonify({
+                'success': False,
+                'error': 'No file provided'
+            }), 400
+        
+        file = request.files['file']
+        
+        if file.filename == '':
+            return jsonify({
+                'success': False,
+                'error': 'No file selected'
+            }), 400
+        
+        if not allowed_file(file.filename):
+            return jsonify({
+                'success': False,
+                'error': f'File type not allowed. Supported: {", ".join(ALLOWED_EXTENSIONS)}'
+            }), 400
+        
+        # Extract text from file
+        text = extract_text_from_file(file)
+        
+        if text.startswith('[') and text.endswith(']'):
+            # This is an error or info message
+            return jsonify({
+                'success': False,
+                'error': text
+            }), 400
+        
+        return jsonify({
+            'success': True,
+            'text': text,
+            'filename': file.filename
+        })
+    
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': f"File extraction failed: {str(e)}"
+        }), 500
 
 
 @app.route('/api/analyze', methods=['POST'])
@@ -187,7 +283,7 @@ def server_error(error):
 if __name__ == '__main__':
     # Development settings - change for production
     app.run(
-        host='0.0.0.0',
+        host='127.0.0.1',
         port=5000,
         debug=True,
         threaded=True

@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from enum import Enum
 import json
 import math
+from difflib import SequenceMatcher
 
 
 class DifficultyLevel(Enum):
@@ -45,12 +46,77 @@ class SkillGap:
 class CourseDatabase:
     """Learning module database based on job categories"""
     
+    # Skill aliases for fuzzy matching
+    SKILL_ALIASES = {
+        'go': 'GoLang',
+        'golang': 'GoLang',
+        'r': 'R Programming',
+        'r programming': 'R Programming',
+        'qa': 'Quality Assurance',
+        'quality assurance': 'Quality Assurance',
+        'qc': 'Quality Assurance',
+        'testing': 'Quality Assurance',
+        'pytest': 'Quality Assurance',
+        'junit': 'Quality Assurance',
+        'selenium': 'Quality Assurance',
+        'automation': 'Quality Assurance',
+        'js': 'JavaScript',
+        'javascript': 'JavaScript',
+        'ts': 'TypeScript',
+        'typescript': 'TypeScript',
+        'nodejs': 'Node.js',
+        'node.js': 'Node.js',
+        'react': 'React',
+        'vue': 'Vue.js',
+        'angular': 'Angular',
+        'c++': 'C++',
+        'cplusplus': 'C++',
+        'c#': 'C#',
+        'csharp': 'C#',
+        '.net': '.NET',
+        'dotnet': '.NET',
+        'sql': 'Database',
+        'mysql': 'Database',
+        'postgresql': 'Database',
+        'mongodb': 'NoSQL Database',
+        'nosql': 'NoSQL Database',
+        'aws': 'Cloud Computing',
+        'azure': 'Cloud Computing',
+        'gcp': 'Cloud Computing',
+        'docker': 'DevOps',
+        'kubernetes': 'DevOps',
+        'jenkins': 'DevOps',
+        'devops': 'DevOps',
+        'ci/cd': 'DevOps',
+        'git': 'Version Control',
+        'github': 'Version Control',
+        'gitlab': 'Version Control',
+        'linux': 'Linux',
+        'unix': 'Linux',
+        'bash': 'Linux',
+        'shell': 'Linux',
+        'communication': 'Communication',
+        'presentation': 'Communication',
+        'excel': 'Spreadsheet',
+        'spreadsheet': 'Spreadsheet',
+    }
+    
     CATEGORY_SKILL_PATHS = {
         'ENGINEERING': {
             'Python': ['Python Basics', 'OOP in Python', 'Data Structures', 'Algorithms'],
             'Java': ['Java Fundamentals', 'Spring Boot', 'Microservices'],
             'Database': ['SQL Basics', 'Database Design', 'Query Optimization'],
             'DevOps': ['Docker', 'Kubernetes', 'CI/CD Pipelines'],
+            'GoLang': ['Go Fundamentals', 'Concurrency in Go', 'Building APIs with Go'],
+            'R Programming': ['R Basics', 'Data Analysis with R', 'Statistical Computing'],
+            'Quality Assurance': ['Testing Fundamentals', 'Automation Testing', 'Test Design'],
+            'JavaScript': ['JavaScript Basics', 'Web Development', 'Async Programming'],
+            'TypeScript': ['TypeScript Basics', 'Advanced TypeScript', 'Type Safety'],
+            'Node.js': ['Node.js Fundamentals', 'Express Framework', 'Building APIs'],
+            'React': ['React Basics', 'Component Design', 'State Management'],
+            'C++': ['C++ Fundamentals', 'Advanced C++', 'System Design'],
+            'Cloud Computing': ['Cloud Fundamentals', 'Cloud Architecture', 'Deployment'],
+            'Linux': ['Linux Fundamentals', 'System Administration', 'Bash Scripting'],
         },
         'SALES': {
             'Communication': ['Effective Communication', 'Presentation Skills', 'Negotiation'],
@@ -66,15 +132,25 @@ class CourseDatabase:
         },
         'FINANCE': {
             'Accounting': ['Financial Accounting', 'Cost Accounting', 'Consolidation'],
-            'SQL': ['SQL for Finance', 'Data Analysis in Excel'],
+            'Database': ['SQL for Finance', 'Data Analysis in Excel'],
             'Financial Modeling': ['Excel Advanced', 'Financial Analysis', 'Valuation'],
             'Risk Management': ['Credit Risk', 'Operational Risk'],
         },
         'IT': {
-            'Cloud': ['AWS Fundamentals', 'Cloud Architecture', 'AWS Advanced'],
+            'Cloud Computing': ['AWS Fundamentals', 'Cloud Architecture', 'AWS Advanced'],
             'Networking': ['Network Basics', 'Security', 'Infrastructure'],
             'Linux': ['Linux Fundamentals', 'System Administration', 'Scripting'],
             'Cybersecurity': ['Security Fundamentals', 'Threat Analysis', 'Incident Response'],
+            'Database': ['Database Administration', 'Backup & Recovery', 'Performance Tuning'],
+            'DevOps': ['Docker Fundamentals', 'Kubernetes', 'CI/CD Implementation'],
+        },
+        'INFORMATION-TECHNOLOGY': {
+            'Cloud Computing': ['AWS Fundamentals', 'Cloud Architecture', 'AWS Advanced'],
+            'Networking': ['Network Basics', 'Security', 'Infrastructure'],
+            'Linux': ['Linux Fundamentals', 'System Administration', 'Scripting'],
+            'Cybersecurity': ['Security Fundamentals', 'Threat Analysis', 'Incident Response'],
+            'Database': ['Database Fundamentals', 'Optimization', 'Performance Tuning'],
+            'DevOps': ['Docker Fundamentals', 'Kubernetes', 'CI/CD Implementation'],
         }
     }
     
@@ -98,80 +174,47 @@ class CourseDatabase:
                                     DifficultyLevel.BEGINNER, 15),
         'Database Design': LearningModule('db_design', 'Database Design & Normalization', 'Database',
                                          DifficultyLevel.INTERMEDIATE, 20, ['SQL Basics']),
-        'Query Optimization': LearningModule('query_opt', 'Query Optimization & Indexing', 'Database',
-                                            DifficultyLevel.ADVANCED, 18, ['Database Design']),
-        'Docker': LearningModule('docker', 'Docker Containerization', 'DevOps',
-                               DifficultyLevel.INTERMEDIATE, 20),
-        'Kubernetes': LearningModule('k8s', 'Kubernetes Orchestration', 'DevOps',
-                                    DifficultyLevel.ADVANCED, 30, ['Docker']),
-        'CI/CD Pipelines': LearningModule('cicd', 'CI/CD Pipelines & Automation', 'DevOps',
-                                         DifficultyLevel.INTERMEDIATE, 25),
-        
-        # Sales paths
-        'Effective Communication': LearningModule('comm', 'Effective Communication', 'Communication',
-                                                 DifficultyLevel.BEGINNER, 10),
-        'Presentation Skills': LearningModule('present', 'Presentation Skills', 'Communication',
-                                             DifficultyLevel.INTERMEDIATE, 12, ['Effective Communication']),
-        'Negotiation': LearningModule('nego', 'Advanced Negotiation Techniques', 'Communication',
-                                     DifficultyLevel.ADVANCED, 15),
-        'Salesforce Basics': LearningModule('sf_basics', 'Salesforce Fundamentals', 'CRM Tools',
+        # New modules for expanded skills
+        'Go Fundamentals': LearningModule('go_fund', 'Go Language Fundamentals', 'GoLang',
+                                         DifficultyLevel.BEGINNER, 20),
+        'Concurrency in Go': LearningModule('go_concurrency', 'Concurrency Patterns in Go', 'GoLang',
+                                           DifficultyLevel.INTERMEDIATE, 25, ['Go Fundamentals']),
+        'Building APIs with Go': LearningModule('go_api', 'Building REST APIs with Go', 'GoLang',
+                                               DifficultyLevel.INTERMEDIATE, 30, ['Go Fundamentals']),
+        'R Basics': LearningModule('r_basics', 'R Programming Basics', 'R Programming',
+                                  DifficultyLevel.BEGINNER, 18),
+        'Data Analysis with R': LearningModule('r_data', 'Data Analysis with R', 'R Programming',
+                                              DifficultyLevel.INTERMEDIATE, 25, ['R Basics']),
+        'Statistical Computing': LearningModule('r_stats', 'Statistical Computing in R', 'R Programming',
+                                               DifficultyLevel.ADVANCED, 30, ['Data Analysis with R']),
+        'Testing Fundamentals': LearningModule('qa_fund', 'Testing Fundamentals', 'Quality Assurance',
+                                              DifficultyLevel.BEGINNER, 15),
+        'Automation Testing': LearningModule('qa_auto', 'Test Automation & Selenium', 'Quality Assurance',
+                                            DifficultyLevel.INTERMEDIATE, 25, ['Testing Fundamentals']),
+        'Test Design': LearningModule('qa_design', 'Test Case Design & Strategy', 'Quality Assurance',
+                                     DifficultyLevel.INTERMEDIATE, 20, ['Testing Fundamentals']),
+        'JavaScript Basics': LearningModule('js_basics', 'JavaScript Fundamentals', 'JavaScript',
                                            DifficultyLevel.BEGINNER, 20),
-        'CRM Advanced': LearningModule('crm_adv', 'Advanced CRM Strategies', 'CRM Tools',
-                                      DifficultyLevel.ADVANCED, 25, ['Salesforce Basics']),
-        'Sales Fundamentals': LearningModule('sales_fund', 'Sales Fundamentals', 'Sales Strategy',
-                                            DifficultyLevel.BEGINNER, 15),
-        'Territory Management': LearningModule('territory', 'Territory Management', 'Sales Strategy',
-                                              DifficultyLevel.INTERMEDIATE, 18, ['Sales Fundamentals']),
-        'Deal Closing': LearningModule('closing', 'Advanced Deal Closing', 'Sales Strategy',
-                                      DifficultyLevel.ADVANCED, 20, ['Territory Management']),
-        
-        # HR paths
-        'Recruitment Strategies': LearningModule('recruit', 'Modern Recruitment Strategies', 'Recruitment',
-                                                DifficultyLevel.INTERMEDIATE, 16),
-        'Interview Techniques': LearningModule('interview', 'Effective Interview Techniques', 'Recruitment',
-                                              DifficultyLevel.INTERMEDIATE, 12),
-        'Onboarding': LearningModule('onboard', 'Employee Onboarding Best Practices', 'Recruitment',
-                                    DifficultyLevel.BEGINNER, 10),
-        'Conflict Resolution': LearningModule('conflict', 'Conflict Resolution & Mediation', 'Employee Relations',
-                                             DifficultyLevel.INTERMEDIATE, 14),
-        'Performance Management': LearningModule('perf_mgmt', 'Performance Management Systems', 'Employee Relations',
-                                                DifficultyLevel.INTERMEDIATE, 16),
-        'Labor Laws': LearningModule('labor', 'Labor Laws & Compliance', 'Compliance',
-                                    DifficultyLevel.BEGINNER, 12),
-        
-        # Finance paths
-        'Financial Accounting': LearningModule('fin_acct', 'Financial Accounting Principles', 'Accounting',
-                                              DifficultyLevel.INTERMEDIATE, 30),
-        'Cost Accounting': LearningModule('cost_acct', 'Cost Accounting & Analysis', 'Accounting',
-                                         DifficultyLevel.ADVANCED, 25, ['Financial Accounting']),
-        'SQL for Finance': LearningModule('sql_finance', 'SQL for Financial Analysis', 'SQL',
-                                         DifficultyLevel.INTERMEDIATE, 20),
-        'Excel Advanced': LearningModule('excel', 'Advanced Excel for Finance', 'Financial Modeling',
-                                        DifficultyLevel.INTERMEDIATE, 18),
-        'Financial Analysis': LearningModule('fin_analysis', 'Financial Analysis & Reporting', 'Financial Modeling',
-                                            DifficultyLevel.ADVANCED, 25, ['Excel Advanced']),
-        'Credit Risk': LearningModule('credit_risk', 'Credit Risk Management', 'Risk Management',
-                                     DifficultyLevel.ADVANCED, 20),
-        
-        # IT paths
-        'AWS Fundamentals': LearningModule('aws_fund', 'AWS Fundamentals', 'Cloud',
-                                          DifficultyLevel.BEGINNER, 25),
-        'Cloud Architecture': LearningModule('cloud_arch', 'Cloud Architecture Design', 'Cloud',
-                                            DifficultyLevel.INTERMEDIATE, 30, ['AWS Fundamentals']),
-        'AWS Advanced': LearningModule('aws_adv', 'Advanced AWS Services', 'Cloud',
-                                      DifficultyLevel.ADVANCED, 35, ['Cloud Architecture']),
-        'Network Basics': LearningModule('network', 'Network Fundamentals', 'Networking',
-                                        DifficultyLevel.BEGINNER, 20),
-        'Security': LearningModule('sec', 'Network Security', 'Networking',
-                                  DifficultyLevel.INTERMEDIATE, 25, ['Network Basics']),
-        'Linux Fundamentals': LearningModule('linux', 'Linux Fundamentals', 'Linux',
-                                            DifficultyLevel.BEGINNER, 20),
-        'System Administration': LearningModule('sysadmin', 'Linux System Administration', 'Linux',
+        'Web Development': LearningModule('web_dev', 'Web Development with JavaScript', 'JavaScript',
+                                         DifficultyLevel.INTERMEDIATE, 30, ['JavaScript Basics']),
+        'Async Programming': LearningModule('async', 'Async & Promises in JavaScript', 'JavaScript',
+                                           DifficultyLevel.INTERMEDIATE, 20, ['JavaScript Basics']),
+        'Cloud Fundamentals': LearningModule('cloud_fund', 'Cloud Computing Fundamentals', 'Cloud Computing',
+                                            DifficultyLevel.BEGINNER, 18),
+        'Cloud Architecture': LearningModule('cloud_arch', 'Cloud Architecture Design', 'Cloud Computing',
+                                            DifficultyLevel.INTERMEDIATE, 28, ['Cloud Fundamentals']),
+        'Linux Fundamentals': LearningModule('linux_fund', 'Linux System Fundamentals', 'Linux',
+                                            DifficultyLevel.BEGINNER, 22),
+        'System Administration': LearningModule('linux_admin', 'Linux System Administration', 'Linux',
                                                DifficultyLevel.INTERMEDIATE, 25, ['Linux Fundamentals']),
-        'Security Fundamentals': LearningModule('cyber_fund', 'Cybersecurity Fundamentals', 'Cybersecurity',
-                                               DifficultyLevel.BEGINNER, 20),
-        'Threat Analysis': LearningModule('threat', 'Threat Analysis & Detection', 'Cybersecurity',
-                                         DifficultyLevel.ADVANCED, 30, ['Security Fundamentals']),
+        'Bash Scripting': LearningModule('bash', 'Bash Scripting for Linux', 'Linux',
+                                        DifficultyLevel.INTERMEDIATE, 20, ['Linux Fundamentals']),
+        'Docker': LearningModule('docker', 'Docker Containerization', 'DevOps',
+                                DifficultyLevel.BEGINNER, 20),
+        'Kubernetes': LearningModule('k8s', 'Kubernetes Orchestration', 'DevOps',
+                                    DifficultyLevel.INTERMEDIATE, 30, ['Docker']),
+        'CI/CD Pipelines': LearningModule('cicd', 'CI/CD Pipeline Implementation', 'DevOps',
+                                         DifficultyLevel.INTERMEDIATE, 25),
     }
 
 
@@ -228,6 +271,43 @@ class SkillGapAnalyzer:
         
         return gaps
 
+    @staticmethod
+    def normalize_skill(skill: str) -> str:
+        """
+        Normalize extracted skill to known skill category
+        Uses alias lookup and fuzzy matching
+        
+        Args:
+            skill: Raw skill name from extraction
+        
+        Returns:
+            Normalized skill name or original if no match found
+        """
+        if not skill:
+            return skill
+        
+        skill_lower = skill.lower().strip()
+        
+        # Try direct alias lookup first
+        if skill_lower in CourseDatabase.SKILL_ALIASES:
+            return CourseDatabase.SKILL_ALIASES[skill_lower]
+        
+        # Try fuzzy matching with known skills
+        all_known_skills = set()
+        for category_skills in CourseDatabase.CATEGORY_SKILL_PATHS.values():
+            all_known_skills.update(category_skills.keys())
+        
+        best_match = None
+        best_ratio = 0.6  # Threshold for match
+        
+        for known_skill in all_known_skills:
+            ratio = SequenceMatcher(None, skill_lower, known_skill.lower()).ratio()
+            if ratio > best_ratio:
+                best_ratio = ratio
+                best_match = known_skill
+        
+        return best_match if best_match else skill
+
 
 class AdaptivePathwayGenerator:
     """Generate personalized learning pathways based on skill gaps"""
@@ -268,9 +348,12 @@ class AdaptivePathwayGenerator:
         total_hours = 0
         visited = set()
         
-        for skill in skills_to_cover:
-            if skill in skill_paths:
-                modules_for_skill = skill_paths[skill]
+        for raw_skill in skills_to_cover:
+            # Normalize the skill to a known category
+            normalized_skill = SkillGapAnalyzer.normalize_skill(raw_skill)
+            
+            if normalized_skill and normalized_skill in skill_paths:
+                modules_for_skill = skill_paths[normalized_skill]
                 for module_name in modules_for_skill:
                     if module_name not in visited and module_name in CourseDatabase.COURSE_LIBRARY:
                         module = CourseDatabase.COURSE_LIBRARY[module_name]

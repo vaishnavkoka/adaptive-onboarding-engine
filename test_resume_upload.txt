@@ -1,0 +1,14 @@
+Senior Python Developer
+8 years of experience
+
+Skills:
+- Python, Django, Flask
+- PostgreSQL, Redis
+- Docker, Kubernetes
+- AWS, CI/CD pipelines
+- Leadership and team management
+
+Experience:
+Led development of microservices platform, 50+ microservices
+Managed team of 8 engineers
+Deployed applications to production serving 1M+ users

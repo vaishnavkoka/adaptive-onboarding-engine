@@ -124,6 +124,70 @@ body {
     font-size: 0.875rem;
 }
 
+/* File Input Styling */
+.file-input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-label {
+    display: block;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 2px dashed var(--primary-color);
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: var(--primary-color);
+    user-select: none;
+}
+
+.file-label:hover {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-color: var(--secondary-color);
+    border-width: 2px;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+}
+
+.file-label:active {
+    transform: translateY(0);
+}
+
+.file-input-wrapper label {
+    display: block;
+    cursor: pointer;
+}
+
+.file-input-wrapper input[type="file"] {
+    display: none;
+}
+
+.file-label:hover {
+    background: linear-gradient(135deg, #e0f2fe 0%, #cffafe 100%);
+    border-color: var(--secondary-color);
+}
+
+.file-input-wrapper:has(.file-input:valid) ~ .divider {
+    opacity: 0.5;
+}
+
+.divider {
+    text-align: center;
+    color: var(--text-secondary);
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    transition: opacity 0.3s ease;
+}
+
 /* Buttons */
 .button-group {
     display: flex;

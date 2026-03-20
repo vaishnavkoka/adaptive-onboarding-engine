@@ -2,6 +2,67 @@
 let currentAnalysis = null;
 let gapChart = null;
 
+// File input handlers
+document.getElementById('resumeFile').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        console.log('Resume file selected:', file.name);
+        document.getElementById('resumeFileName').textContent = '⏳ Processing...';
+        const text = await extractTextFromFile(file);
+        if (text) {
+            document.getElementById('resume').value = text;
+            document.getElementById('resumeFileName').textContent = `✓ Loaded: ${file.name} (${text.length} chars)`;
+        }
+    }
+});
+
+document.getElementById('jobFile').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        console.log('Job file selected:', file.name);
+        document.getElementById('jobFileName').textContent = '⏳ Processing...';
+        const text = await extractTextFromFile(file);
+        if (text) {
+            document.getElementById('jobDescription').value = text;
+            document.getElementById('jobFileName').textContent = `✓ Loaded: ${file.name} (${text.length} chars)`;
+        }
+    }
+});
+
+async function extractTextFromFile(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    try {
+        console.log('Extracting text from:', file.name);
+        const response = await fetch('/api/extract-text', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('Extraction error:', error);
+            showError(`Failed to extract text: ${error.error || 'Unknown error'}`);
+            return '';
+        }
+        
+        const data = await response.json();
+        if (data.success) {
+            console.log('Text extracted successfully');
+            return data.text;
+        } else {
+            console.error('Extraction failed:', data.error);
+            showError(`Failed to extract text: ${data.error}`);
+            return '';
+        }
+    } catch (error) {
+        console.error('Error extracting text:', error);
+        showError('Error reading file. Please try again or paste the content manually.');
+        return '';
+    }
+}
+
 // Form submission
 document.getElementById('analysisForm').addEventListener('submit', async (e) => {
     e.preventDefault();
