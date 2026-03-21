@@ -124,15 +124,42 @@ Alternative approach using transformer models for dynamic skill detection:
 4. **Deduplication**: Merges semantic results with keyword matching
 5. **Confidence Scoring**: Estimates extraction reliability (0-100%)
 
-### Comparison: LLM vs Keyword-Only
+### Measured Performance (Gold Standard Validation)
 
-| Metric | Semantic LLM | Keyword-Only | Improvement |
-|--------|-------------|--------------|-------------|
-| Skill Detection | 92% | 75% | +17% |
-| False Negatives | 8% | 22% | -14 pts |
-| Inference Speed | 50ms | 5ms | ✓ Fast |
-| Model Size | 120MB | 0MB | Trade-off |
-| Accuracy | High | Good | ✓ Better |
+We validated skill extraction against 60 manually-verified expected skills across 7 diverse test cases.
+
+**Keyword-Only Method Results:**
+
+| Metric | Performance | Notes |
+|--------|-------------|-------|
+| Accuracy | **63.4%** | Measured average across all test cases |
+| Precision | 68.6% | Low false positives on technical roles |
+| Recall | 63.4% | Excellent on explicit mentions, lower on contextual skills |
+| F1-Score | 63.6% | Balanced across metrics |
+| Speed | ~5ms | Real-time extraction |
+| Memory | ~50MB | Minimal overhead |
+
+**Performance Varies by Role:**
+- ✅ Full-Stack Developer: 92.3% (detailed technical resume)
+- ✅ Simple Resume: 100% (explicitly listed skills)
+- ⚠️ Healthcare: 37.5% (soft skills, domain terminology)
+- ⚠️ Finance: 44.4% (specialized tools: Excel, VBA, Tableau)
+
+**Full validation results**: See [MEASURED_METRICS_REPORT.md](MEASURED_METRICS_REPORT.md)
+
+### LLM Enhancement (Optional)
+
+For improved accuracy on specialized domains, enable semantic extraction:
+
+```bash
+pip install sentence-transformers
+```
+
+**Expected Benefits:**
+- Better detection of domain-specific terminology (EHR, VBA, Salesforce, etc.)
+- Improved soft skill recognition (~75-85% on healthcare/HR roles)
+- Estimated total improvement: +10-15% on specialized roles
+- Trade-off: +120MB model size, +45ms inference time
 
 ### Automatic Fallback
 
@@ -282,16 +309,25 @@ Each category includes:
 
 ## Evaluation Metrics
 
-| Metric | Target | Status |
-|--------|--------|--------|
-| Skill Extraction Accuracy | >90% | ✅ Achieved |
-| Gap Analysis Precision | >85% | ✅ Achieved |
-| Pathway Relevance | >80% | ✅ Achieved |
-| User Experience (UX) | Intuitive UI | ✅ Achieved |
-| Cross-Domain Coverage | 26+ categories | ✅ Achieved |
-| Reasoning Transparency | Full trace | ✅ Implemented |
-| False Positive Rate | <5% | ✅ Controlled |
-| Training Time Est. | Within 5% | ✅ Verified |
+**Measured Performance** (validated on gold standard with 60 expected skills across 7 test cases):
+
+| Metric | Measured | Notes |
+|--------|----------|-------|
+| Skill Extraction Accuracy | 63.4% | Average across diverse roles and domains |
+| Extraction Precision | 68.6% | Low false positives on tech, higher on specialized domains |
+| Extraction Recall | 63.4% | Excellent on explicit mentions, contextual skills challenging |
+| Gap Analysis Quality | ✅ Reliable | Accurately identifies skill gaps within detected skills |
+| Pathway Relevance | ✅ High | Modules selected match identified gaps well |
+| User Experience (UX) | ✅ Intuitive | Web UI simple and responsive |
+| Cross-Domain Coverage | 26+ categories | All major job families supported |
+| Reasoning Transparency | ✅ Full trace | All decisions documented in output |
+
+**Performance by Domain:**
+- Technical Roles (IT, Engineering): 62.5-92.3% accuracy
+- Business Roles (Sales, Consulting): 44.4-62.5% accuracy
+- Healthcare/HR: 37.5-62.5% accuracy (domain terminology challenges)
+
+See [MEASURED_METRICS_REPORT.md](MEASURED_METRICS_REPORT.md) for complete analysis and test cases.
 
 ## Output Examples
 
