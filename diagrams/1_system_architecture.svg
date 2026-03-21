@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+  <!-- System Architecture Diagram -->
+  <style>
+    .layer { fill: #f1f5f9; stroke: #334155; stroke-width: 2; }
+    .label { font-family: Arial; font-size: 14px; fill: #000; text-anchor: middle; }
+    .title { font-family: Arial; font-size: 18px; font-weight: bold; fill: #000; }
+  </style>
+  
+  <text x="600" y="40" class="title">AI-Adaptive Onboarding Engine - System Architecture</text>
+  
+  <!-- Frontend Layer -->
+  <rect x="50" y="80" width="1100" height="120" class="layer"/>
+  <text x="600" y="155" class="label" font-weight="bold">Frontend Layer - Web UI (React/Vue)</text>
+  
+  <!-- Backend Layer -->
+  <rect x="50" y="220" width="1100" height="120" class="layer"/>
+  <text x="600" y="295" class="label" font-weight="bold">Backend Layer - Flask API (REST)</text>
+  
+  <!-- Processing Layer -->
+  <rect x="50" y="360" width="1100" height="120" class="layer"/>
+  <text x="600" y="435" class="label" font-weight="bold">Processing Layer - NLP Pipeline</text>
+  
+  <!-- AI/ML Models Layer -->
+  <rect x="50" y="500" width="1100" height="120" class="layer"/>
+  <text x="600" y="575" class="label" font-weight="bold">AI/ML Models Layer - Transformers (sentence-transformers)</text>
+  
+  <!-- Output Layer -->
+  <rect x="50" y="640" width="1100" height="120" class="layer"/>
+  <text x="600" y="715" class="label" font-weight="bold">Output Generation - Results & Recommendations</text>
+  
+  <!-- Arrows showing data flow -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#334155"/>
+    </marker>
+  </defs>
+  
+  <line x1="600" y1="200" x2="600" y2="220" stroke="#334155" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="600" y1="340" x2="600" y2="360" stroke="#334155" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="600" y1="480" x2="600" y2="500" stroke="#334155" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="600" y1="620" x2="600" y2="640" stroke="#334155" stroke-width="2" marker-end="url(#arrowhead)"/>
+</svg>

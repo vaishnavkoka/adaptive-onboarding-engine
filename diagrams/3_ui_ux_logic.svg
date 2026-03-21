@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+  <!-- UI/UX Logic -->
+  <style>
+    .step { fill: #10b981; stroke: #047857; stroke-width: 2; }
+    .label { font-family: Arial; font-size: 12px; fill: white; text-anchor: middle; }
+    .title { font-family: Arial; font-size: 18px; font-weight: bold; fill: #000; }
+    .arrow { stroke: #047857; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+  </style>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#047857"/>
+    </marker>
+  </defs>
+  
+  <text x="600" y="40" class="title">User Journey - AI Adaptive Onboarding</text>
+  
+  <!-- Steps -->
+  <circle cx="100" cy="150" r="35" class="step"/>
+  <text x="100" y="155" class="label">Upload</text>
+  
+  <circle cx="250" cy="150" r="35" class="step"/>
+  <text x="250" y="155" class="label">Select</text>
+  
+  <circle cx="400" cy="150" r="35" class="step"/>
+  <text x="400" y="155" class="label">Analyze</text>
+  
+  <circle cx="550" cy="150" r="35" class="step"/>
+  <text x="550" y="155" class="label">Process</text>
+  
+  <circle cx="700" cy="150" r="35" class="step"/>
+  <text x="700" y="155" class="label">Generate</text>
+  
+  <circle cx="850" cy="150" r="35" class="step"/>
+  <text x="850" y="155" class="label">View</text>
+  
+  <circle cx="1000" cy="150" r="35" class="step"/>
+  <text x="1000" y="155" class="label">Export</text>
+  
+  <circle cx="1100" cy="150" r="35" class="step"/>
+  <text x="1100" y="155" class="label">Retry</text>
+  
+  <!-- Connecting arrows -->
+  <path d="M 135 150 L 215 150" class="arrow"/>
+  <path d="M 285 150 L 365 150" class="arrow"/>
+  <path d="M 435 150 L 515 150" class="arrow"/>
+  <path d="M 585 150 L 665 150" class="arrow"/>
+  <path d="M 735 150 L 815 150" class="arrow"/>
+  <path d="M 885 150 L 965 150" class="arrow"/>
+  <path d="M 1035 150 L 1065 150" class="arrow"/>
+  
+  <!-- Result boxes -->
+  <text x="100" y="250" class="title" font-size="14">Documents Parsed</text>
+  <text x="400" y="250" class="title" font-size="14">AI Processing</text>
+  <text x="850" y="250" class="title" font-size="14">Results Dashboard</text>
+</svg>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <title>Data Flow</title>
+    <style>
+        body { margin: 0; padding: 20px; }
+        .mermaid { max-width: 1920px; }
+    </style>
+</head>
+<body>
+    <div class="mermaid">
+graph LR
+    A["📥 INPUT<br/>Resume + Job Description"] --> B["📄 File Processing<br/>Extract Text"]
+    
+    B --> C["🔍 Skill Extraction<br/>Dual-Mode"]
+    
+    C --> D["🎯 Keyword-Based<br/>Extraction"]
+    C --> E["🤖 LLM-Based<br/>Extraction"]
+    
+    D --> F["📊 Merge Results<br/>Deduplicate"]
+    E --> F
+    
+    F --> G["🔗 Semantic Matching<br/>Vector Similarity"]
+    
+    G --> H["⚖️ Gap Analysis<br/>Missing Skills"]
+    
+    H --> I["⭐ Risk Assessment<br/>Priority Scoring"]
+    
+    I --> J["📈 Pathway Generation<br/>Risk-Based Ordering"]
+    
+    J --> K["⏱️ Time Estimation<br/>Learning Hours"]
+    
+    K --> L["📤 OUTPUT GENERATION"]
+    
+    L --> M["📊 Dashboard View<br/>Match Score & Gap"]
+    L --> N["📋 CSV Export<br/>Detailed Results"]
+    L --> O["🧠 Reasoning Trace<br/>Decision Logic"]
+    
+    style A fill:#c8e6c9
+    style B fill:#bbdefb
+    style C fill:#ffe0b2
+    style D fill:#fff9c4
+    style E fill:#fff9c4
+    style F fill:#b3e5fc
+    style G fill:#e1bee7
+    style H fill:#f8bbd0
+    style I fill:#ffccbc
+    style J fill:#d1c4e9
+    style K fill:#c5cae9
+    style L fill:#b2dfdb
+    style M fill:#a5d6a7
+    style N fill:#a5d6a7
+    style O fill:#a5d6a7
+
+    </div>
+</body>
+</html>

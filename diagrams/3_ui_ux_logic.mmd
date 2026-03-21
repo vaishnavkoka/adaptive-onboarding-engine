@@ -1,0 +1,60 @@
+graph TD
+    Start["🚀 User Arrives<br/>at Application"]
+    
+    Start --> Step1["📋 Step 1: Upload Resume<br/>Choose PDF/DOCX/TXT"]
+    
+    Step1 --> Step1a{Resume<br/>Uploaded?}
+    Step1a -->|No| Step1
+    Step1a -->|Yes| Step2
+    
+    Step2["📋 Step 2: Upload Job Description<br/>Paste or Upload File"]
+    
+    Step2 --> Step2a{Job Description<br/>Provided?}
+    Step2a -->|No| Step2
+    Step2a -->|Yes| Step3
+    
+    Step3["🎯 Step 3: Select Job Category<br/>Choose from 24 Categories"]
+    
+    Step3 --> Step4["🔘 Click Analyze Skills<br/>Start Processing"]
+    
+    Step4 --> Processing["⏳ Processing...<br/>Extracting & Matching Skills"]
+    
+    Processing --> Results["✅ Results Ready!"]
+    
+    Results --> Display["📊 Dashboard Display"]
+    
+    Display --> Card1["📈 Match Score Card<br/>0-100% Match"]
+    Display --> Card2["📋 Skills Gap Card<br/>Missing Skills List"]
+    Display --> Card3["🎓 Learning Pathway<br/>Risk-Ranked Tasks"]
+    Display --> Card4["🧠 Reasoning Trace<br/>Decision Logic"]
+    
+    Card1 --> Actions["⚙️ User Actions"]
+    Card2 --> Actions
+    Card3 --> Actions
+    Card4 --> Actions
+    
+    Actions --> Act1["📥 Download CSV<br/>Export Results"]
+    Actions --> Act2["📋 Copy Pathway<br/>Share with Team"]
+    Actions --> Act3["🔄 Analyze New<br/>Start Over"]
+    
+    Act1 --> End["✨ Session Complete"]
+    Act2 --> End
+    Act3 --> Step1
+    
+    style Start fill:#81c784
+    style Step1 fill:#64b5f6
+    style Step2 fill:#64b5f6
+    style Step3 fill:#64b5f6
+    style Step4 fill:#ffa726
+    style Processing fill:#ffb74d
+    style Results fill:#90caf9
+    style Display fill:#80deea
+    style Card1 fill:#a5d6a7
+    style Card2 fill:#a5d6a7
+    style Card3 fill:#a5d6a7
+    style Card4 fill:#a5d6a7
+    style Actions fill:#ffccbc
+    style Act1 fill:#c8e6c9
+    style Act2 fill:#c8e6c9
+    style Act3 fill:#c8e6c9
+    style End fill:#81c784

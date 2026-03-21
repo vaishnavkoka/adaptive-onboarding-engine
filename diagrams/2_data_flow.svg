@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Data Flow Diagram -->
+  <style>
+    .box { fill: #3b82f6; stroke: #1e40af; stroke-width: 2; }
+    .label { font-family: Arial; font-size: 13px; fill: white; text-anchor: middle; }
+    .title { font-family: Arial; font-size: 18px; font-weight: bold; fill: #000; }
+    .arrow { stroke: #1e40af; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+  </style>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#1e40af"/>
+    </marker>
+  </defs>
+  
+  <text x="600" y="40" class="title">Data Flow Pipeline</text>
+  
+  <!-- Input -->
+  <rect x="50" y="100" width="150" height="80" class="box" rx="5"/>
+  <text x="125" y="135" class="label">Resume PDF</text>
+  <text x="125" y="155" class="label">Job Desc</text>
+  
+  <!-- Extraction -->
+  <rect x="350" y="100" width="150" height="80" class="box" rx="5"/>
+  <text x="425" y="135" class="label">Dual-Mode</text>
+  <text x="425" y="155" class="label">Extraction</text>
+  
+  <!-- Semantic Matching -->
+  <rect x="650" y="100" width="150" height="80" class="box" rx="5"/>
+  <text x="725" y="135" class="label">Semantic</text>
+  <text x="725" y="155" class="label">Matching</text>
+  
+  <!-- Risk Assessment -->
+  <rect x="950" y="100" width="150" height="80" class="box" rx="5"/>
+  <text x="1025" y="135" class="label">Risk</text>
+  <text x="1025" y="155" class="label">Assessment</text>
+  
+  <!-- Output -->
+  <rect x="500" y="300" width="200" height="80" class="box" rx="5"/>
+  <text x="600" y="335" class="label">Skills Gap Report</text>
+  <text x="600" y="355" class="label">Recommendations</text>
+  
+  <!-- Arrows -->
+  <path d="M 200 140 L 350 140" class="arrow"/>
+  <path d="M 500 140 L 650 140" class="arrow"/>
+  <path d="M 800 140 L 950 140" class="arrow"/>
+  <path d="M 1025 180 L 700 300" class="arrow"/>
+  <path d="M 425 180 L 550 300" class="arrow"/>
+</svg>
