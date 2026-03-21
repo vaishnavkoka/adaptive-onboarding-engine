@@ -81,7 +81,7 @@ graph TB
     Processor -->|Parse Description| JobDesc
     Resume -->|Text Data| SkillExt
     JobDesc -->|Job Info| SkillExt
-    SkillExt -->|Skills | Gap Analysis| GapAnalyzer
+    SkillExt -->|Skills & Gap Analysis| GapAnalyzer
     GapAnalyzer -->|Semantic Matching| SentenceTransformer
     GapAnalyzer -->|NLP Processing| Transformers
     SentenceTransformer -->|Job Match| Catalog
