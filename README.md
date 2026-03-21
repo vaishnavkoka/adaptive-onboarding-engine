@@ -28,6 +28,8 @@
 - [FAQ](#faq)
 - [Additional Documentation Files](#-additional-documentation-files)
 - [Next Steps](#-next-steps)
+- [Contributors](#-contributors)
+- [Screenshots](#-screenshots)
 
 ---
 
@@ -649,7 +651,42 @@ This project includes comprehensive specialized documentation for deep dives int
 
 ---
 
-## 🚀 Ready to Get Started?
+## � Contributors
+
+This project was developed by:
+
+- **Vaishnav** - vaishnav.koka@iitgn.ac.in
+- **Jigar** - jigar.mahedu@iitgn.ac.in
+- **Jaya** - jaya.chaudhary@iitgn.ac.in
+
+---
+
+## 📸 Screenshots
+
+### Dashboard Overview
+<img width="1851" height="1051" alt="Dashboard Overview" src="https://github.com/user-attachments/assets/58ff2c85-6f61-48d1-8e97-a65b6d7e406c" />
+
+### Resume Upload Interface
+<img width="1851" height="1051" alt="Resume Upload" src="https://github.com/user-attachments/assets/a78d1ace-82a0-427a-b8e1-a309eb5b27aa" />
+
+### Job Description Input
+<img width="1851" height="1051" alt="Job Description" src="https://github.com/user-attachments/assets/01df5a94-f37d-431b-9e6c-181e6e5a780d" />
+
+### Match Score Display
+<img width="1851" height="1051" alt="Match Score" src="https://github.com/user-attachments/assets/3524cb83-4955-499c-abd2-f60161dbdcbc" />
+
+### Skills Gap Analysis
+<img width="1851" height="1051" alt="Skills Gap" src="https://github.com/user-attachments/assets/3a373c6c-1fb3-460f-9e03-e2525466f200" />
+
+### Learning Pathway
+<img width="1851" height="1051" alt="Learning Pathway" src="https://github.com/user-attachments/assets/49806dbd-7252-44b9-96fb-9b8950183c33" />
+
+### Detailed Results & Reasoning Trace
+<img width="1851" height="1051" alt="Results" src="https://github.com/user-attachments/assets/1c5194d8-8430-4865-9175-3c4c07f09582" />
+
+---
+
+## �🚀 Ready to Get Started?
 
 👉 **Next**: Run `python app.py` and visit `http://localhost:3000`
 
