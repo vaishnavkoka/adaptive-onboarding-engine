@@ -675,4 +675,4 @@ This project was developed by:
 
 ---
 
-**Made with ❤️ for career development**
+**Made with ❤️ for ARTPARK CodeForge Hackathon Presentation**
