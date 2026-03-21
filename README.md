@@ -564,38 +564,22 @@ docker run -p 3000:3000 adaptive-onboarding:latest
 
 ## 📚 Additional Documentation Files
 
-This project includes comprehensive specialized documentation for deep dives into specific areas:
+This project includes specialized documentation for deeper understanding:
 
-### Quick Reference
+### Core Guides
 - **[QUICK_START.md](QUICK_START.md)** - 5-minute setup guide with step-by-step instructions
 - **[DIAGRAMS_GUIDE.md](DIAGRAMS_GUIDE.md)** - Explanation of all 4 system diagrams and architecture
+- **[SCORING_FORMULA.md](SCORING_FORMULA.md)** - Complete scoring algorithm with worked examples and customization guide
 
-### Technical Details
-- **[SCORING_FORMULA.md](SCORING_FORMULA.md)** - Complete scoring algorithm with 4 worked examples and customization guide
-- **[IMPLEMENTATION_COMPLETE.md](IMPLEMENTATION_COMPLETE.md)** - Full technical specifications, testing checklist, and verification steps
-- **[MEASURED_METRICS_REPORT.md](MEASURED_METRICS_REPORT.md)** - Validation results and performance benchmarks on 7 test cases
-
-### Features & Capabilities
-- **[WHATS_INCLUDED.md](WHATS_INCLUDED.md)** - Complete project inventory with file checklist
-- **[DELIVERABLES_INDEX.md](DELIVERABLES_INDEX.md)** - Master index of all deliverables and quick navigation guide
-- **[FINAL_DELIVERY_SUMMARY.md](FINAL_DELIVERY_SUMMARY.md)** - Project completion status and what makes this special
-
-### LLM & Advanced Features
-- **[LLM_ENHANCEMENT_SUMMARY.md](LLM_ENHANCEMENT_SUMMARY.md)** - Overview of LLM integration benefits
+### Implementation & Deployment
+- **[IMPLEMENTATION_COMPLETE.md](IMPLEMENTATION_COMPLETE.md)** - Full technical specifications and system details
 - **[LLM_IMPLEMENTATION_GUIDE.md](LLM_IMPLEMENTATION_GUIDE.md)** - How to set up and use Ollama + DeepSeek-R1 7B
-- **[PRETRAINED_LLM_SUMMARY.md](PRETRAINED_LLM_SUMMARY.md)** - Details on pretrained model capabilities
-
-### Setup & Configuration
-- **[INSTALLATION_TEST.md](INSTALLATION_TEST.md)** - Verification steps and installation troubleshooting
 - **[DOCKER_STEPS.md](DOCKER_STEPS.md)** - Docker containerization and deployment instructions
 
-### Documentation & Compliance
-- **[DOCUMENTATION_SUMMARY.md](DOCUMENTATION_SUMMARY.md)** - Overview of all documentation structure
+### Compliance & Standards
 - **[DATA_COMPLIANCE_AND_ORIGINALITY.md](DATA_COMPLIANCE_AND_ORIGINALITY.md)** - Data compliance and originality statement
-- **[VALIDATION_SUMMARY.md](VALIDATION_SUMMARY.md)** - Validation methodology and results
-- **[DYNAMIC_MAPPING_FIX.md](DYNAMIC_MAPPING_FIX.md)** - Technical details on skill mapping improvements
 
-### Navigation Guide
+### Quick Navigation
 
 | Need | Document |
 |------|----------|
@@ -603,11 +587,9 @@ This project includes comprehensive specialized documentation for deep dives int
 | **Understand architecture** | [DIAGRAMS_GUIDE.md](DIAGRAMS_GUIDE.md) |
 | **Deep dive into scoring** | [SCORING_FORMULA.md](SCORING_FORMULA.md) |
 | **Full specifications** | [IMPLEMENTATION_COMPLETE.md](IMPLEMENTATION_COMPLETE.md) |
-| **Performance metrics** | [MEASURED_METRICS_REPORT.md](MEASURED_METRICS_REPORT.md) |
 | **Setup LLM** | [LLM_IMPLEMENTATION_GUIDE.md](LLM_IMPLEMENTATION_GUIDE.md) |
 | **Docker deployment** | [DOCKER_STEPS.md](DOCKER_STEPS.md) |
-| **See all files** | [DELIVERABLES_INDEX.md](DELIVERABLES_INDEX.md) |
-| **Project status** | [FINAL_DELIVERY_SUMMARY.md](FINAL_DELIVERY_SUMMARY.md) |
+| **Compliance** | [DATA_COMPLIANCE_AND_ORIGINALITY.md](DATA_COMPLIANCE_AND_ORIGINALITY.md) |
 
 ---
 
@@ -621,27 +603,24 @@ This project includes comprehensive specialized documentation for deep dives int
 
 ---
 
-## 📞 Support & Documentation Index
+## 📞 Support & Documentation
 
 **Start Here (Core Documents)**
 - [README.md](README.md) ← You are here (Main overview)
 - [QUICK_START.md](QUICK_START.md) - 5-minute setup
 - [DIAGRAMS_GUIDE.md](DIAGRAMS_GUIDE.md) - Architecture overview
 
-**Learn More (Detailed Guides)**
+**Detailed Guides**
 - [SCORING_FORMULA.md](SCORING_FORMULA.md) - How scoring works
 - [IMPLEMENTATION_COMPLETE.md](IMPLEMENTATION_COMPLETE.md) - Full specifications
-- [LLM_IMPLEMENTATION_GUIDE.md](LLM_IMPLEMENTATION_GUIDE.md) - Advanced features
-
-**Reference**
-- [DELIVERABLES_INDEX.md](DELIVERABLES_INDEX.md) - File index
-- [WHATS_INCLUDED.md](WHATS_INCLUDED.md) - Project inventory
-- [MEASURED_METRICS_REPORT.md](MEASURED_METRICS_REPORT.md) - Test results
+- [LLM_IMPLEMENTATION_GUIDE.md](LLM_IMPLEMENTATION_GUIDE.md) - Advanced LLM features
+- [DOCKER_STEPS.md](DOCKER_STEPS.md) - Containerization and deployment
+- [DATA_COMPLIANCE_AND_ORIGINALITY.md](DATA_COMPLIANCE_AND_ORIGINALITY.md) - Compliance statement
 
 **Troubleshooting**
-- [INSTALLATION_TEST.md](INSTALLATION_TEST.md) - Setup issues
-- [DOCKER_STEPS.md](DOCKER_STEPS.md) - Container issues
-- See "Troubleshooting" section in README above
+- Check the "Troubleshooting" section in README above
+- Review [DOCKER_STEPS.md](DOCKER_STEPS.md) for deployment issues
+- See [LLM_IMPLEMENTATION_GUIDE.md](LLM_IMPLEMENTATION_GUIDE.md) for LLM setup issues
 
 ---
 
