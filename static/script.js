@@ -269,6 +269,7 @@ function displayGapDetails(gapAnalysis) {
         };
         
         const bgColor = categoryColor[gap.category] || '#6b7280';
+        const descriptionHtml = gap.description ? `<p class="gap-description-compact">💡 ${gap.description}</p>` : '';
         
         return `
             <div class="gap-item detailed-gap" style="border-left: 4px solid ${bgColor};">
@@ -286,6 +287,7 @@ function displayGapDetails(gapAnalysis) {
                     <div class="severity-progress" style="width: ${gap.gap_severity_percent}%; background-color: ${bgColor};"></div>
                 </div>
                 <p class="gap-severity-text-compact">${gap.gap_severity_percent}% Gap</p>
+                ${descriptionHtml}
             </div>
         `;
     };
