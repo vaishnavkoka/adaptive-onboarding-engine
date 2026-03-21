@@ -133,6 +133,8 @@ class AdaptiveOnboardingEngine:
         # Step 5: Calculate match percentage
         match_score = self._calculate_match_percentage(analysis_result)
         analysis_result['match_score'] = match_score
+        score_breakdown = self._calculate_score_breakdown(analysis_result, match_score)
+        analysis_result['score_breakdown'] = score_breakdown
         
         # Step 6: Generate recommendations and reasoning
         analysis_result['recommendations'] = self._generate_recommendations(analysis_result)
@@ -156,21 +158,88 @@ class AdaptiveOnboardingEngine:
         job_skills = set(analysis['job_description_analysis']['skills_with_proficiency'].keys())
         
         if not job_skills:
-            return 0.0
+            return 50.0  # Default if job skills not detected
         
+        # Calculate base match percentage
         matching_skills = resume_skills & job_skills
-        match_score = (len(matching_skills) / len(job_skills)) * 100
+        base_match = (len(matching_skills) / len(job_skills)) * 100
         
-        # Adjust for proficiency levels
+        # Calculate proficiency bonus
+        proficiency_bonus = 0
+        level_scores = {'expert': 3, 'intermediate': 2, 'beginner': 1, 'mentioned': 0.5}
+        
         for skill in matching_skills:
-            resume_level = analysis['resume_analysis']['skills_with_proficiency'][skill]
-            job_level = analysis['job_description_analysis']['skills_with_proficiency'][skill]
+            resume_level = analysis['resume_analysis']['skills_with_proficiency'].get(skill, 'mentioned')
+            job_level = analysis['job_description_analysis']['skills_with_proficiency'].get(skill, 'mentioned')
             
-            level_scores = {'expert': 3, 'intermediate': 2, 'beginner': 1, 'mentioned': 0}
-            if level_scores.get(resume_level, 0) >= level_scores.get(job_level, 0):
-                match_score += 5  # Bonus for meeting or exceeding requirement
+            resume_score = level_scores.get(resume_level, 0.5)
+            job_score = level_scores.get(job_level, 0.5)
+            
+            # If resume proficiency meets or exceeds job requirement, add bonus
+            if resume_score >= job_score:
+                proficiency_bonus += 3
         
-        return min(100, match_score)
+        # Final score: base match + proficiency bonus (capped at 100)
+        # If they have 0% match, they still get points for any detected skills
+        if len(matching_skills) == 0 and len(resume_skills) > 0:
+            base_match = min(20, len(resume_skills) * 2)  # Credit for having skills, even if not exact match
+        
+        final_score = min(100, base_match + proficiency_bonus)
+        
+        # Ensure minimum 10 points if any resume skills are detected
+        if len(resume_skills) > 0 and final_score < 10:
+            final_score = 10
+        
+        return round(final_score, 1)
+    
+    def _calculate_score_breakdown(self, analysis: Dict, match_score: float) -> Dict:
+        """Generate detailed breakdown of how the score was calculated"""
+        resume_skills = set(analysis['resume_analysis']['skills_with_proficiency'].keys())
+        job_skills = set(analysis['job_description_analysis']['skills_with_proficiency'].keys())
+        matching_skills = resume_skills & job_skills
+        
+        level_scores = {'expert': 3, 'intermediate': 2, 'beginner': 1, 'mentioned': 0.5}
+        proficiency_matches = 0
+        
+        for skill in matching_skills:
+            resume_level = analysis['resume_analysis']['skills_with_proficiency'].get(skill, 'mentioned')
+            job_level = analysis['job_description_analysis']['skills_with_proficiency'].get(skill, 'mentioned')
+            resume_score = level_scores.get(resume_level, 0.5)
+            job_score = level_scores.get(job_level, 0.5)
+            
+            if resume_score >= job_score:
+                proficiency_matches += 1
+        
+        base_percentage = (len(matching_skills) / len(job_skills) * 100) if job_skills else 0
+        
+        return {
+            'description': f'Your matching score based on skill overlap and proficiency levels',
+            'your_skills': len(resume_skills),
+            'required_skills': len(job_skills),
+            'matching_skills': len(matching_skills),
+            'matching_percentage': f"{base_percentage:.1f}%",
+            'proficiency_matches': proficiency_matches,
+            'scoring_factors': [
+                f"✓ You have {len(matching_skills)} matching skills out of {len(job_skills)} required ({base_percentage:.0f}%)",
+                f"✓ Your proficiency matches job requirement for {proficiency_matches} skills",
+                f"✓ You have {len(resume_skills) - len(matching_skills)} additional skills (bonus!)",
+                f"→ Score = Base match ({base_percentage:.0f}%) + Proficiency bonus ({proficiency_matches * 3}pts) = Your Score"
+            ],
+            'interpretation': self._score_interpretation(match_score)
+        }
+    
+    def _score_interpretation(self, score: float) -> str:
+        """Provide interpretation of match score"""
+        if score >= 80:
+            return "🟢 Excellent match! You meet most required skills. Minor learning needed."
+        elif score >= 60:
+            return "🟡 Strong match! You have relevant experience. Some skill development recommended."
+        elif score >= 40:
+            return "🟠 Moderate match. You have foundational skills. Structured learning pathway recommended."
+        elif score >= 20:
+            return "🔴 Entry-level match. Significant skill development needed. Comprehensive training program provided."
+        else:
+            return "⚠️  Early career match. Career transition possible with dedicated learning. Custom pathway available."
     
     def _generate_recommendations(self, analysis: Dict) -> Dict:
         """Generate actionable recommendations"""
