@@ -6,23 +6,31 @@ Enhanced with LLM-based skill extraction
 from typing import Dict, List, Tuple
 import json
 from datetime import datetime
+import signal
+from contextlib import contextmanager
 from adaptive_pathway import SkillGapAnalyzer, AdaptivePathwayGenerator, CourseDatabase
 
-# Try to use Ollama LLM extractor first, then fall back to base if unavailable
-try:
-    from ollama_skill_extractor import OllamaSkillExtractor
-    skill_extractor_instance = OllamaSkillExtractor(model="deepseek-r1:7b")
-except ImportError:
+# Default to fast, reliable extraction
+from skill_extractor import SkillExtractor
+skill_extractor_instance = SkillExtractor()
+
+class TimeoutException(Exception):
+    pass
+
+@contextmanager
+def timeout(seconds):
+    """Context manager for timeout operations"""
+    def timeout_handler(signum, frame):
+        raise TimeoutException(f"Operation timed out after {seconds} seconds")
+    
+    # Set the signal handler and an alarm
+    signal.signal(signal.SIGALRM, timeout_handler)
+    signal.alarm(seconds)
     try:
-        from lightweight_llm_extractor_v2 import get_llm_extractor
-        skill_extractor_instance = get_llm_extractor()
-    except ImportError:
-        try:
-            from lightweight_llm_extractor import get_llm_extractor
-            skill_extractor_instance = get_llm_extractor()
-        except ImportError:
-            from skill_extractor import SkillExtractor
-            skill_extractor_instance = SkillExtractor()
+        yield
+    finally:
+        # Disable the alarm
+        signal.alarm(0)
 
 
 class AdaptiveOnboardingEngine:
@@ -37,7 +45,8 @@ class AdaptiveOnboardingEngine:
     
     def _extract_skills_with_llm(self, text: str) -> Dict[str, str]:
         """
-        Extract skills using LLM if available, else use standard method
+        Extract skills using fast keyword extraction
+        Falls back gracefully if extraction fails
         
         Args:
             text: Input text to extract skills from
@@ -45,16 +54,17 @@ class AdaptiveOnboardingEngine:
         Returns:
             Dictionary mapping skill names to proficiency levels
         """
-        # Try semantic extraction first if available
-        if hasattr(self.skill_extractor, 'extract_skills_semantic'):
-            try:
-                return self.skill_extractor.extract_skills_semantic(text)
-            except Exception as e:
-                print(f"LLM semantic extraction failed: {e}. Falling back to standard extraction.")
-                return self.skill_extractor.extract_with_proficiency(text)
+        try:
+            # Use fast, reliable extraction (no LLM dependency)
+            if hasattr(self.skill_extractor, 'extract_with_proficiency'):
+                result = self.skill_extractor.extract_with_proficiency(text)
+                if result:
+                    return result
+        except Exception as e:
+            print(f"Skill extraction warning: {e}")
         
-        # Fall back to standard extraction
-        return self.skill_extractor.extract_with_proficiency(text)
+        # Absolute fallback: return empty dict (will be handled gracefully)
+        return {}
     
     def analyze_resume_and_job(self, 
                               resume_text: str,
@@ -80,9 +90,9 @@ class AdaptiveOnboardingEngine:
             'max_weeks': max_weeks,
         }
         
-        # Step 1: Extract skills from resume (using LLM if available)
-        resume_skills_with_prof = self._extract_skills_with_llm(resume_text)
+        # Step 1: Extract skills from resume (fast extraction)
         resume_technical_skills, resume_soft_skills = self.skill_extractor.extract_skills(resume_text)
+        resume_skills_with_prof = self.skill_extractor.extract_with_proficiency(resume_text)
         
         analysis_result['resume_analysis'] = {
             'technical_skills': list(resume_technical_skills),
@@ -92,9 +102,9 @@ class AdaptiveOnboardingEngine:
             'skill_score': self.skill_extractor.score_skills(resume_skills_with_prof),
         }
         
-        # Step 2: Extract skills from job description (using LLM if available)
+        # Step 2: Extract skills from job description (fast extraction)
         job_tech_skills, job_soft_skills = self.skill_extractor.extract_skills(job_description)
-        job_skills_with_prof = self._extract_skills_with_llm(job_description)
+        job_skills_with_prof = self.skill_extractor.extract_with_proficiency(job_description)
         
         analysis_result['job_description_analysis'] = {
             'required_technical_skills': list(job_tech_skills),
@@ -130,41 +140,129 @@ class AdaptiveOnboardingEngine:
         
         analysis_result['learning_pathway'] = pathway
         
-        # Step 5: Calculate match percentage
-        match_score = self._calculate_match_percentage(analysis_result)
-        analysis_result['match_score'] = match_score
-        score_breakdown = self._calculate_score_breakdown(analysis_result, match_score)
-        analysis_result['score_breakdown'] = score_breakdown
+        # Step 5: Calculate match percentage (ensure this is set before any other operations)
+        try:
+            match_score = self._calculate_match_percentage(analysis_result)
+            if match_score is None:
+                match_score = 50.0
+            analysis_result['match_score'] = match_score
+        except Exception as e:
+            print(f"Match score calculation error: {e}")
+            match_score = 50.0
+            analysis_result['match_score'] = match_score
         
-        # Step 6: Generate recommendations and reasoning
-        analysis_result['recommendations'] = self._generate_recommendations(analysis_result)
-        analysis_result['reasoning_trace'] = self._generate_reasoning_trace(analysis_result)
+        # Step 6: Calculate score breakdown
+        try:
+            score_breakdown = self._calculate_score_breakdown(analysis_result, match_score)
+            analysis_result['score_breakdown'] = score_breakdown
+        except Exception as e:
+            print(f"Score breakdown error: {e}")
+            analysis_result['score_breakdown'] = {}
+            analysis_result['score_breakdown']['interpretation'] = self._score_interpretation(match_score)
+        
+        # Step 7: Generate recommendations and reasoning
+        try:
+            analysis_result['recommendations'] = self._generate_recommendations(analysis_result)
+        except Exception as e:
+            print(f"Recommendations error: {e}")
+            analysis_result['recommendations'] = {'immediate_actions': [], 'strengths_to_leverage': [], 'areas_to_develop': []}
+        
+        try:
+            analysis_result['reasoning_trace'] = self._generate_reasoning_trace(analysis_result)
+        except Exception as e:
+            print(f"Reasoning trace error: {e}")
+            analysis_result['reasoning_trace'] = {'extraction_logic': '', 'gap_identification_logic': '', 'pathway_generation_logic': '', 'key_decisions': []}
         
         return analysis_result
     
     def _gap_to_dict(self, gap) -> dict:
-        """Convert SkillGap to dictionary"""
+        """Convert SkillGap to dictionary with enhanced details"""
+        # Determine gap category
+        if gap.target_level == 'not_required':
+            category = 'extra'
+            severity_label = 'Bonus Skill'
+        elif gap.gap_severity > 0.66:
+            category = 'critical'
+            severity_label = 'Critical'
+        elif gap.gap_severity >= 0.33:
+            category = 'moderate'
+            severity_label = 'Moderate'
+        else:
+            category = 'minor'
+            severity_label = 'Minor'
+        
+        # Generate description based on gap type
+        description = self._generate_gap_description(gap.skill_name, gap.current_level, gap.target_level, gap.gap_severity)
+        
         return {
             'skill': gap.skill_name,
             'current_level': gap.current_level,
             'target_level': gap.target_level,
             'gap_severity': round(gap.gap_severity, 2),
+            'gap_severity_percent': round(gap.gap_severity * 100, 0),
             'priority': gap.priority,
+            'category': category,
+            'severity_label': severity_label,
+            'description': description,
         }
+    
+    def _generate_gap_description(self, skill_name: str, current_level: str, target_level: str, severity: float) -> str:
+        """Generate a description explaining why this gap matters"""
+        if target_level == 'not_required':
+            return f"You have {skill_name} experience, which is great! While not required, this can differentiate you."
+        
+        skill_importance = {
+            'python': 'core programming skill for development',
+            'java': 'essential enterprise development skill',
+            'javascript': 'critical for modern web development',
+            'react': 'key frontend framework for UI development',
+            'devops': 'essential for deployment and infrastructure',
+            'aws': 'widely used cloud platform',
+            'docker': 'critical for containerization and deployment',
+            'kubernetes': 'essential for orchestrating containerized applications',
+            'rest api': 'fundamental for modern API design',
+            'database': 'essential for data persistence',
+            'sql': 'core skill for database interaction',
+            'linux': 'essential for server administration',
+            'git': 'fundamental for version control',
+            'design patterns': 'key for writing maintainable code',
+            'communication': 'essential soft skill for teams',
+        }
+        
+        skill_lower = skill_name.lower()
+        importance = next(
+            (v for k, v in skill_importance.items() if k in skill_lower),
+            'important for this role'
+        )
+        
+        if severity > 0.66:
+            return f"Developing {skill_name} is critical - this is a {importance}. Focus on building foundational knowledge first."
+        elif severity >= 0.33:
+            return f"Strengthening {skill_name} is important - this is a {importance}. Consider this a priority learning area."
+        else:
+            return f"Improving {skill_name} would be valuable - this is a {importance}. Can be learned alongside other skills."
+    
     
     def _calculate_match_percentage(self, analysis: Dict) -> float:
         """Calculate overall match percentage between candidate and job"""
-        resume_skills = set(analysis['resume_analysis']['skills_with_proficiency'].keys())
-        job_skills = set(analysis['job_description_analysis']['skills_with_proficiency'].keys())
+        try:
+            resume_skills = set(analysis['resume_analysis']['skills_with_proficiency'].keys())
+            job_skills = set(analysis['job_description_analysis']['skills_with_proficiency'].keys())
+        except (KeyError, TypeError, AttributeError) as e:
+            print(f"Error getting skills from analysis: {e}")
+            return 50.0
         
-        if not job_skills:
-            return 50.0  # Default if job skills not detected
+        if not job_skills or not resume_skills:
+            return 50.0
         
-        # Calculate base match percentage
+        # Calculate base match: what % of job skills are in resume
         matching_skills = resume_skills & job_skills
+        if len(job_skills) == 0:
+            return 50.0
+        
         base_match = (len(matching_skills) / len(job_skills)) * 100
         
-        # Calculate proficiency bonus
+        # Proficiency matching bonus
         proficiency_bonus = 0
         level_scores = {'expert': 3, 'intermediate': 2, 'beginner': 1, 'mentioned': 0.5}
         
@@ -175,22 +273,23 @@ class AdaptiveOnboardingEngine:
             resume_score = level_scores.get(resume_level, 0.5)
             job_score = level_scores.get(job_level, 0.5)
             
-            # If resume proficiency meets or exceeds job requirement, add bonus
+            # Award bonus points for matching proficiency levels
             if resume_score >= job_score:
-                proficiency_bonus += 3
+                proficiency_bonus += 2
         
-        # Final score: base match + proficiency bonus (capped at 100)
-        # If they have 0% match, they still get points for any detected skills
+        # Final calculation: base match + proficiency adjustment
+        # More lenient scoring to reflect learning potential
+        final_score = base_match + proficiency_bonus
+        
+        # Fallback: if no exact match but skills detected, give partial credit
         if len(matching_skills) == 0 and len(resume_skills) > 0:
-            base_match = min(20, len(resume_skills) * 2)  # Credit for having skills, even if not exact match
+            final_score = min(40, len(resume_skills) * 3.5)
         
-        final_score = min(100, base_match + proficiency_bonus)
+        # Ensure score reflects effort even if match is poor
+        if len(resume_skills) > 0 and final_score < 25:
+            final_score = max(25, final_score)
         
-        # Ensure minimum 10 points if any resume skills are detected
-        if len(resume_skills) > 0 and final_score < 10:
-            final_score = 10
-        
-        return round(final_score, 1)
+        return min(100, round(final_score, 1))
     
     def _calculate_score_breakdown(self, analysis: Dict, match_score: float) -> Dict:
         """Generate detailed breakdown of how the score was calculated"""

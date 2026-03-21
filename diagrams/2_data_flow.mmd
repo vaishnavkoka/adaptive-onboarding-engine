@@ -1,33 +1,44 @@
 graph LR
     A["📥 INPUT<br/>Resume + Job Description"] --> B["📄 File Processing<br/>Extract Text"]
     
-    B --> C["🔍 Skill Extraction<br/>Dual-Mode"]
+    B --> C["🔍 Skill Extraction<br/>Dual-Mode Engine"]
     
-    C --> D["🎯 Keyword-Based<br/>Extraction"]
-    C --> E["🤖 LLM-Based<br/>Extraction"]
+    C --> D["⚡ Keyword Mode<br/>Fast Extraction<br/>Fallback"]
+    C --> E["🤖 LLM Mode Optional<br/>DeepSeek-R1 7B<br/>Context-Aware"]
     
-    D --> F["📊 Merge Results<br/>Deduplicate"]
-    E --> F
+    E --> E2["🔌 Ollama API<br/>Port 11434<br/>30s Timeout"]
+    E2 --> F["📊 Merge Results<br/>Deduplicate Skills"]
+    D --> F
     
-    F --> G["🔗 Semantic Matching<br/>Vector Similarity"]
+    F --> F2["⭐ Score Calculation<br/>Fair Scoring System"]
     
-    G --> H["⚖️ Gap Analysis<br/>Missing Skills"]
+    F2 --> F3["📋 Score Breakdown<br/>Transparent Explanation"]
     
-    H --> I["⭐ Risk Assessment<br/>Priority Scoring"]
+    F3 --> F4["🎨 Score Interpretation<br/>Color-Coded 🟢🟡🟠🔴⚠️"]
     
-    I --> J["📈 Pathway Generation<br/>Risk-Based Ordering"]
+    F4 --> G["🔗 Semantic Matching<br/>Vector Similarity"]
     
-    J --> K["⏱️ Time Estimation<br/>Learning Hours"]
+    G --> H["⚖️ Gap Analysis<br/>Missing Skills + Priority"]
     
-    K --> L["📤 OUTPUT GENERATION"]
+    H --> I["📈 Pathway Generation<br/>Risk-Based Ordering"]
     
-    L --> M["📊 Dashboard View<br/>Match Score & Gap"]
-    L --> N["📋 CSV Export<br/>Detailed Results"]
-    L --> O["🧠 Reasoning Trace<br/>Decision Logic"]
+    I --> J["⏱️ Time Estimation<br/>Learning Hours"]
+    
+    J --> K["📤 OUTPUT GENERATION"]
+    
+    K --> M["📊 Dashboard View<br/>Score + Breakdown + Path"]
+    K --> N["📋 CSV Export<br/>Detailed Results"]
+    K --> O["🧠 Reasoning Trace<br/>Decision Logic"]
     
     style A fill:#c8e6c9
     style B fill:#bbdefb
     style C fill:#ffe0b2
+    style D fill:#e1bee7
+    style E fill:#c8e6c9,stroke:#4caf50,stroke-width:2px
+    style E2 fill:#b3e5fc,stroke:#2196f3,stroke-width:2px
+    style F2 fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style F3 fill:#f1f8e9,stroke:#689f38,stroke-width:2px
+    style F4 fill:#e0f2f1,stroke:#009688,stroke-width:2px
     style D fill:#fff9c4
     style E fill:#fff9c4
     style F fill:#b3e5fc

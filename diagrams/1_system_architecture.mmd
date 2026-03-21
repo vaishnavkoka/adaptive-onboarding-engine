@@ -6,24 +6,33 @@ graph TB
     end
     
     subgraph Backend["⚙️ Backend Layer"]
-        Flask["Flask Server<br/>Port 5000"]
+        Flask["Flask Server<br/>Port 3000<br/>Production Ready"]
         Processor["Request Processor<br/>Route Handler"]
     end
     
     subgraph Processing["🧠 Processing Layer"]
         Resume["Resume Extractor<br/>PDF/DOCX/TXT"]
         JobDesc["Job Description<br/>Parser"]
-        SkillExt["Skill Extraction<br/>Keyword + LLM"]
+        SkillExt["Skill Extraction<br/>Dual-Mode Engine"]
         GapAnalyzer["Gap Analyzer<br/>Risk Assessment"]
+        Scorer["Fair Score Calculator<br/>Base% + Proficiency"]
     end
     
-    subgraph Models["🤖 AI/ML Models"]
+    subgraph LLM["🤖 LLM Integration"]
+        Ollama["Ollama Local Server<br/>Port 11434"]
+        DeepSeek["DeepSeek-R1 7B<br/>Context-Aware Extraction"]
+    end
+    
+    subgraph Models["🧮 AI/ML Models"]
+        Keyword["Keyword-Based<br/>Fast Extraction"]
         SentenceTransformer["sentence-transformers<br/>Semantic Matching"]
         Transformers["transformers<br/>NLP Pipeline"]
         Catalog["Job Category<br/>Catalog 24x"]
     end
     
     subgraph Output["📈 Output Generation"]
+        Breakdown["Score Breakdown<br/>Transparent Calculation"]
+        Interpretation["Score Interpretation<br/>Color-Coded Meaning"]
         PathwayGen["Pathway Generator<br/>Risk-Based Ordering"]
         Visualization["Visualization<br/>Charts & Graphs"]
         CSV["CSV Export<br/>Results File"]
@@ -36,10 +45,18 @@ graph TB
     Processor -->|Parse Description| JobDesc
     Resume -->|Text Data| SkillExt
     JobDesc -->|Job Info| SkillExt
-    SkillExt -->|Skills Gap Analysis| GapAnalyzer
+    SkillExt -->|Keyword Mode| Keyword
+    SkillExt -->|LLM Mode Optional| DeepSeek
+    DeepSeek -->|Connected to| Ollama
+    Keyword -->|Skills Data| Scorer
+    DeepSeek -->|LLM Skills| Scorer
+    Scorer -->|Skills Gap Analysis| GapAnalyzer
     GapAnalyzer -->|Semantic Matching| SentenceTransformer
     GapAnalyzer -->|NLP Processing| Transformers
     SentenceTransformer -->|Job Match| Catalog
+    Scorer -->|Match Score| Breakdown
+    Breakdown -->|Score %| Interpretation
+    Interpretation -->|Color-Coded| Results
     GapAnalyzer -->|Generate Pathway| PathwayGen
     PathwayGen -->|Ranking| Visualization
     Visualization -->|Format Output| CSV
@@ -48,6 +65,10 @@ graph TB
     
     style Frontend fill:#e1f5ff
     style Backend fill:#fff3e0
+    style LLM fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px
+    style Processing fill:#e8f5e9
+    style Models fill:#fce4ec
+    style Output fill:#fff9c4
     style Processing fill:#f3e5f5
     style Models fill:#e8f5e9
     style Output fill:#fce4ec

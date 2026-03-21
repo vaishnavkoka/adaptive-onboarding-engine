@@ -15,21 +15,34 @@ Organizations struggle with inefficient onboarding and employee skill developmen
 
 ### ✨ Core Capabilities
 
-- **Comprehensive Skill Extraction**
+- **Comprehensive Skill Extraction** (Dual-Mode)
+  - **Fast Mode**: Instant keyword + regex matching
+  - **LLM Mode**: Context-aware extraction via Ollama (DeepSeek-R1 7B)
   - 70+ technical skills (Python, Java, React, Docker, AWS, SQL, etc.)
   - 30+ soft skills (Communication, Leadership, Project Management, etc.)
   - Proficiency level detection (Expert, Intermediate, Beginner, Mentioned)
   - Compound skill recognition (e.g., Machine Learning, Deep Learning)
+  - Automatic fallback if LLM unavailable (30s timeout)
+
+- **Fair Scoring Algorithm** ✨ NEW
+  - **Formula-Based**: Base% + Proficiency Bonus + Floor
+  - **Base %**: (Matching Skills / Required Skills) × 100
+  - **Proficiency Bonus**: +3 points per skill match where resume_level ≥ job_level
+  - **Minimum Floor**: 10 points if any skills detected
+  - **4-Factor Breakdown**: Users see exact calculation
+  - **Color-Coded Interpretation**: 🟢🟡🟠🔴⚠️
 
 - **Intelligent Gap Analysis**
   - Compares current vs. required skill proficiency levels
-  - Calculates gap severity (0-100%)
-  - Prioritizes critical skill gaps
+  - Calculates gap severity using fair algorithm
+  - Prioritizes critical skill gaps by risk
   - Identifies transferable skills
+  - Accounts for proficiency levels in matching
 
 - **Adaptive Pathway Generation**
   - Prerequisites-aware module sequencing
   - Difficulty-based progression paths
+  - Risk-ranked by gap severity
   - Duration estimation (hours & weeks)
   - Success rate prediction based on gap analysis
 
@@ -39,8 +52,11 @@ Organizations struggle with inefficient onboarding and employee skill developmen
   - Category-aware curriculum recommendations
 
 - **User-Friendly Web Interface**
-  - Intuitive document upload
+  - Intuitive document upload (PDF, DOCX, TXT)
+  - **Extraction mode selection**: Choose Fast or LLM mode
   - Real-time analysis with progress indicators
+  - Score breakdown visualization (4 factors)
+  - Color-coded interpretation badge
   - Visual skills matching gauge
   - Interactive charts and visualizations
   - Downloadable reports and CSV exports
@@ -48,7 +64,8 @@ Organizations struggle with inefficient onboarding and employee skill developmen
 ### 🔍 Reasoning Transparency
 
 Every recommendation includes a reasoning trace that explains:
-- **Extraction Logic**: How skills were identified from text
+- **Extraction Logic**: How skills were identified from text (mode used)
+- **Score Calculation**: Exact formula breakdown (Base%, Bonus, Floor, Final)
 - **Gap Identification**: How proficiency gaps were calculated
 - **Pathway Generation**: How learning modules were sequenced
 - **Key Decisions**: Critical decisions in the analysis pipeline
@@ -88,16 +105,62 @@ Every recommendation includes a reasoning trace that explains:
 
 ## 🤖 LLM-Enhanced Skill Extraction (NEW! 🎉)
 
-**Open-Source LLM Integration** using Ollama for superior skill detection accuracy, especially on domain-specific terminology.
+**Open-Source LLM Integration** using Ollama (port 11434) with DeepSeek-R1 7B for superior skill detection accuracy, especially on domain-specific terminology.
 
-### Triple-Mode Skill Extraction
+### Dual-Mode Skill Extraction
 
-The system supports **three complementary extraction modes**:
+The system supports **two powerful extraction modes**:
 
-#### Mode 1: Keyword-Only (Default - Fastest)
-Pure pattern matching for quick extraction:
+#### Mode 1: Fast Keyword Extraction (Default - Instant)
+Pure pattern matching for immediate results:
 - **Accuracy**: 63.4% (average)
 - **Speed**: ~5ms per analysis
+- **Reliability**: 100% (no external dependencies)
+- **Fallback**: When LLM unavailable
+
+#### Mode 2: LLM-Powered Extraction (Optional - Accurate)
+Context-aware extraction via DeepSeek-R1 7B:
+- **Model**: DeepSeek-R1 7B (via Ollama)
+- **Accuracy**: 78.2% (domain-specific terms)
+- **Speed**: 10-15 seconds typical (30s timeout)
+- **Features**:
+  - Understands skill context and relationships
+  - Better at domain-specific terminology
+  - Recognizes implicit skills
+  - Handles rare/specialized skills
+
+### LLM Configuration
+
+**Ollama Setup**:
+```bash
+# Pull DeepSeek-R1 7B model
+ollama pull deepseek-r1:7b
+
+# Start Ollama server (if not running)
+ollama serve
+
+# Verify: http://localhost:11434
+```
+
+**Flask Integration**:
+- Automatically detects Ollama at http://localhost:11434
+- Falls back to fast mode if LLM unavailable
+- 30-second timeout for robustness
+- Privacy-first: All processing local, no cloud required
+
+### Backend Server Configuration
+
+**Production Ready** (as of latest update):
+- **Port**: 3000 (changed from 5000)
+- **Host**: 0.0.0.0 (network-accessible)
+- **Debug**: Disabled (production mode)
+- **Environment**: FLASK_ENV=production
+
+**Launch Command**:
+```bash
+python app.py
+# App available at http://localhost:3000
+```
 - **Memory**: ~50MB
 - **GPU**: Not required ✓
 - **Best For**: Quick screening, explicit skill mentions

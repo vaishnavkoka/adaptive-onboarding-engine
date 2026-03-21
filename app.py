@@ -283,8 +283,8 @@ def server_error(error):
 if __name__ == '__main__':
     # Development settings - change for production
     app.run(
-        host='127.0.0.1',
-        port=5000,
-        debug=True,
+        host='0.0.0.0',
+        port=3000,
+        debug=False,
         threaded=True
     )

@@ -1,0 +1,152 @@
+{
+  "timestamp": "2026-03-21T22:33:48.352948",
+  "keyword_accuracy": 0.38743676957962675,
+  "llm_accuracy": 0.38743676957962675,
+  "improvement": 0.0,
+  "details": {
+    "keyword": [
+      {
+        "accuracy": 0.7916666666666666,
+        "precision": 0.5588235294117647,
+        "recall": 0.7916666666666666,
+        "f1": 0.6551724137931034,
+        "tp": 19,
+        "fp": 15,
+        "fn": 5,
+        "test_name": "Full-Stack Developer"
+      },
+      {
+        "accuracy": 0.2,
+        "precision": 0.75,
+        "recall": 0.2,
+        "f1": 0.31578947368421056,
+        "tp": 3,
+        "fp": 1,
+        "fn": 12,
+        "test_name": "Finance Analyst"
+      },
+      {
+        "accuracy": 0.3076923076923077,
+        "precision": 0.5714285714285714,
+        "recall": 0.3076923076923077,
+        "f1": 0.4,
+        "tp": 4,
+        "fp": 3,
+        "fn": 9,
+        "test_name": "Sales Executive"
+      },
+      {
+        "accuracy": 0.05555555555555555,
+        "precision": 0.5,
+        "recall": 0.05555555555555555,
+        "f1": 0.09999999999999999,
+        "tp": 1,
+        "fp": 1,
+        "fn": 17,
+        "test_name": "Embedded Systems Engineer"
+      },
+      {
+        "accuracy": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "tp": 0,
+        "fp": 4,
+        "fn": 15,
+        "test_name": "Healthcare IT Professional"
+      },
+      {
+        "accuracy": 0.35714285714285715,
+        "precision": 0.7142857142857143,
+        "recall": 0.35714285714285715,
+        "f1": 0.4761904761904762,
+        "tp": 5,
+        "fp": 2,
+        "fn": 9,
+        "test_name": "Management Consultant"
+      },
+      {
+        "accuracy": 1.0,
+        "precision": 0.875,
+        "recall": 1.0,
+        "f1": 0.9333333333333333,
+        "tp": 7,
+        "fp": 1,
+        "fn": 0,
+        "test_name": "Minimalist Resume"
+      }
+    ],
+    "llm": [
+      {
+        "accuracy": 0.7916666666666666,
+        "precision": 0.5588235294117647,
+        "recall": 0.7916666666666666,
+        "f1": 0.6551724137931034,
+        "tp": 19,
+        "fp": 15,
+        "fn": 5,
+        "test_name": "Full-Stack Developer"
+      },
+      {
+        "accuracy": 0.2,
+        "precision": 0.75,
+        "recall": 0.2,
+        "f1": 0.31578947368421056,
+        "tp": 3,
+        "fp": 1,
+        "fn": 12,
+        "test_name": "Finance Analyst"
+      },
+      {
+        "accuracy": 0.3076923076923077,
+        "precision": 0.5714285714285714,
+        "recall": 0.3076923076923077,
+        "f1": 0.4,
+        "tp": 4,
+        "fp": 3,
+        "fn": 9,
+        "test_name": "Sales Executive"
+      },
+      {
+        "accuracy": 0.05555555555555555,
+        "precision": 0.5,
+        "recall": 0.05555555555555555,
+        "f1": 0.09999999999999999,
+        "tp": 1,
+        "fp": 1,
+        "fn": 17,
+        "test_name": "Embedded Systems Engineer"
+      },
+      {
+        "accuracy": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "tp": 0,
+        "fp": 4,
+        "fn": 15,
+        "test_name": "Healthcare IT Professional"
+      },
+      {
+        "accuracy": 0.35714285714285715,
+        "precision": 0.7142857142857143,
+        "recall": 0.35714285714285715,
+        "f1": 0.4761904761904762,
+        "tp": 5,
+        "fp": 2,
+        "fn": 9,
+        "test_name": "Management Consultant"
+      },
+      {
+        "accuracy": 1.0,
+        "precision": 0.875,
+        "recall": 1.0,
+        "f1": 0.9333333333333333,
+        "tp": 7,
+        "fp": 1,
+        "fn": 0,
+        "test_name": "Minimalist Resume"
+      }
+    ]
+  }
+}

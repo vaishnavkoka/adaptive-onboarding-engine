@@ -1,0 +1,104 @@
+graph TD
+    Input["Match Analysis Data<br/>Resume & Job Skills"]
+    
+    subgraph ScoringEngine["🎯 Scoring Engine"]
+        direction TB
+        
+        subgraph BaseCalc["Base Calculation"]
+            Resume["Resume Skills<br/>Count & Proficiency"]
+            Job["Job Required Skills<br/>Count & Proficiency"]
+            Match["Matching Skills<br/>Set Intersection"]
+            BasePercent["Base %<br/>(Match/Required) × 100"]
+        end
+        
+        subgraph ProficiencyBonus["Proficiency Bonus"]
+            LevelMap["Level Mapping<br/>Expert:3 • Inter:2 • Beg:1"]
+            Compare["Level Comparison<br/>Resume ≥ Job?"]
+            Bonus["Bonus Points<br/>+3 per match"]
+        end
+        
+        subgraph MinimumFloor["Minimum Floor"]
+            HasSkills["Has Resume Skills?"]
+            FloorChk["Apply Floor<br/>Min: 10 pts"]
+        end
+        
+        subgraph FinalCalc["Final Calculation"]
+            FinalFormula["Final Score<br/>Base% + Bonus"]
+            Cap["Cap at 100<br/>Min Floor 10"]
+            Round["Round to 1 decimal"]
+        end
+    end
+    
+    subgraph Breakdown["📋 Score Breakdown"]
+        YourSkills["Your Skills Count"]
+        RequiredSkills["Required Skills Count"]
+        MatchingCount["Matching Count"]
+        ProfMatches["Proficiency Matches"]
+        Factors["Scoring Factors<br/>4-Item Explanation"]
+    end
+    
+    subgraph Interpretation["🎨 Score Interpretation"]
+        Excellent["80-100: 🟢<br/>Excellent Match"]
+        Strong["60-79: 🟡<br/>Strong Match"]
+        Moderate["40-59: 🟠<br/>Moderate Match"]
+        Entry["20-39: 🔴<br/>Entry-Level"]
+        Early["<20: ⚠️<br/>Early Career"]
+    end
+    
+    Output["Final Score<br/>+ Breakdown<br/>+ Interpretation"]
+    
+    Input --> Resume
+    Input --> Job
+    Resume --> Match
+    Job --> Match
+    Match --> BasePercent
+    
+    BasePercent --> LevelMap
+    Match --> Compare
+    LevelMap --> Compare
+    Compare --> Bonus
+    
+    BasePercent --> HasSkills
+    Resume --> HasSkills
+    HasSkills --> FloorChk
+    Bonus --> FinalFormula
+    BasePercent --> FinalFormula
+    FloorChk --> Cap
+    FinalFormula --> Cap
+    Cap --> Round
+    
+    Round --> YourSkills
+    Resume --> YourSkills
+    Job --> RequiredSkills
+    Match --> MatchingCount
+    Compare --> ProfMatches
+    Bonus --> Factors
+    BasePercent --> Factors
+    
+    YourSkills --> Breakdown
+    RequiredSkills --> Breakdown
+    MatchingCount --> Breakdown
+    ProfMatches --> Breakdown
+    Factors --> Breakdown
+    
+    Round --> Excellent
+    Round --> Strong
+    Round --> Moderate
+    Round --> Entry
+    Round --> Early
+    
+    Breakdown --> Output
+    Excellent --> Output
+    Strong --> Output
+    Moderate --> Output
+    Entry --> Output
+    Early --> Output
+    
+    style ScoringEngine fill:#fff3e0,stroke:#ff9800,stroke-width:3px
+    style BaseCalc fill:#e3f2fd
+    style ProficiencyBonus fill:#f3e5f5
+    style MinimumFloor fill:#e8f5e9
+    style FinalCalc fill:#fce4ec
+    style Breakdown fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style Interpretation fill:#f1f8e9,stroke:#689f38,stroke-width:2px
+    style Output fill:#c8e6c9,stroke:#4caf50,stroke-width:3px

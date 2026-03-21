@@ -251,22 +251,81 @@ function displayGapDetails(gapAnalysis) {
         return;
     }
     
+    // Separate gaps by category
+    const critical = gapAnalysis.gaps_detail.filter(g => g.category === 'critical');
+    const moderate = gapAnalysis.gaps_detail.filter(g => g.category === 'moderate');
+    const minor = gapAnalysis.gaps_detail.filter(g => g.category === 'minor');
+    const extra = gapAnalysis.gaps_detail.filter(g => g.category === 'extra');
+    
     let html = '';
-    gapAnalysis.gaps_detail.slice(0, 8).forEach(gap => {
-        if (gap.target_level !== 'not_required') {
-            const severityPercent = Math.round(gap.gap_severity * 100);
-            html += `
-                <div class="gap-item">
+    
+    // Helper function to render gap items
+    const renderGapItem = (gap) => {
+        const categoryColor = {
+            'critical': '#ef4444',
+            'moderate': '#f59e0b',
+            'minor': '#3b82f6',
+            'extra': '#10b981'
+        };
+        
+        const bgColor = categoryColor[gap.category] || '#6b7280';
+        
+        return `
+            <div class="gap-item detailed-gap" style="border-left: 4px solid ${bgColor};">
+                <div class="gap-header">
                     <div class="gap-skill-name">${gap.skill}</div>
-                    <div class="gap-levels">
-                        Current: <strong>${gap.current_level}</strong> → 
-                        Required: <strong>${gap.target_level}</strong>
-                    </div>
-                    <span class="gap-severity">${severityPercent}% Gap</span>
+                    <span class="gap-category-badge" style="background-color: ${bgColor};">${gap.severity_label}</span>
                 </div>
-            `;
-        }
-    });
+                <div class="gap-levels">
+                    <span>Current Level:</span> <strong>${gap.current_level || 'none'}</strong>
+                    <span class="arrow">→</span>
+                    <span>Required Level:</span> <strong>${gap.target_level}</strong>
+                </div>
+                <div class="gap-severity-bar">
+                    <div class="severity-progress" style="width: ${gap.gap_severity_percent}%; background-color: ${bgColor};"></div>
+                </div>
+                <p class="gap-severity-text">${gap.gap_severity_percent}% Skill Gap</p>
+                <p class="gap-description">${gap.description}</p>
+            </div>
+        `;
+    };
+    
+    // Display critical gaps first
+    if (critical.length > 0) {
+        html += '<div class="gap-section"><h4 style="color: #ef4444; margin-bottom: 1rem;">🔴 Critical Gaps (Highest Priority)</h4>';
+        critical.forEach(gap => {
+            html += renderGapItem(gap);
+        });
+        html += '</div>';
+    }
+    
+    // Display moderate gaps
+    if (moderate.length > 0) {
+        html += '<div class="gap-section"><h4 style="color: #f59e0b; margin-bottom: 1rem;">🟠 Moderate Gaps (Important)</h4>';
+        moderate.forEach(gap => {
+            html += renderGapItem(gap);
+        });
+        html += '</div>';
+    }
+    
+    // Display minor gaps
+    if (minor.length > 0) {
+        html += '<div class="gap-section"><h4 style="color: #3b82f6; margin-bottom: 1rem;">🔵 Minor Gaps (Nice to Have)</h4>';
+        minor.forEach(gap => {
+            html += renderGapItem(gap);
+        });
+        html += '</div>';
+    }
+    
+    // Display extra skills
+    if (extra.length > 0) {
+        html += '<div class="gap-section"><h4 style="color: #10b981; margin-bottom: 1rem;">✅ Extra Skills (Bonus)</h4>';
+        html += '<p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">These skills are not required but show depth:</p>';
+        extra.forEach(gap => {
+            html += renderGapItem(gap);
+        });
+        html += '</div>';
+    }
     
     container.innerHTML = html;
 }
@@ -280,7 +339,7 @@ function displayModulesList(modules) {
     }
     
     let html = '';
-    modules.slice(0, 12).forEach((module, index) => {
+    modules.forEach((module, index) => {
         const difficultyClass = `difficulty-${module.difficulty.toLowerCase()}`;
         const prereqHtml = module.prerequisites && module.prerequisites.length > 0
             ? `<div class="module-prereq"><strong>Prerequisites:</strong> ${module.prerequisites.join(', ')}</div>`
@@ -300,12 +359,6 @@ function displayModulesList(modules) {
             </div>
         `;
     });
-    
-    if (modules.length > 12) {
-        html += `<p style="text-align: center; color: var(--text-secondary); margin-top: 1rem;">
-            ... and ${modules.length - 12} more modules
-        </p>`;
-    }
     
     container.innerHTML = html;
 }
