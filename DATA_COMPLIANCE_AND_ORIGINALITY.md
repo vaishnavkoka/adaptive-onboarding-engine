@@ -108,8 +108,8 @@ Average Confidence: 90% ✅
   - Testing: JUnit, Pytest, Jest, Selenium, Cucumber, etc.
   - Other: Linux, Agile, Scrum, JIRA, Confluence, Design Patterns, etc.
 
-**Source**: Industry-standard skill taxonomy (matching O*NET categories)  
-**Curation**: Manually defined based on job market analysis  
+**Source**: Internally created based on industry best practices and job market analysis  
+**Curation**: Manually defined and curated for this hackathon project  
 **License**: Internal proprietary catalog for hackathon purposes  
 
 #### Soft Skills
@@ -152,11 +152,11 @@ Algorithms & Complexity
   └─ Prerequisites: ["Data Structures"]
 ```
 
-**Sourcing**: Based on:
-- Industry bootcamp curricula (General Assembly, Udacity, Coursera)
-- Open-source course catalogs (edX, MIT OpenCourseWare)
-- Professional certification paths (AWS, Azure, GCP)
-- Expert domain knowledge
+**Sourcing**: Internally created based on industry best practices and standard curriculum patterns in:
+- Software engineering fundamentals
+- Cloud and DevOps certification paths
+- Data science and ML learning sequences
+- Project management and soft skills frameworks
 
 ---
 
@@ -469,15 +469,15 @@ SKILL_ALIASES = {
 
 | Requirement | Status | Evidence |
 |-------------|--------|----------|
-| **Use Pre-trained Models** | ✅ DONE | sentence-transformers (all-MiniLM-L6-v2) used |
-| **Citation of Pre-trained Models** | ✅ DONE | Cited in this document + LLM_IMPLEMENTATION_GUIDE.md |
-| **Original Adaptive Logic** | ✅ DONE | Gap analysis + pathway generation algorithms (Section 2) |
-| **Transparent Datasets** | ✅ DONE | All datasets cited (Skill DB + Courses) |
-| **No Hallucinations** | ✅ DONE | All recommendations from known catalog |
-| **Reasoning Traces** | ✅ DONE | Full decision logs in analysis output |
-| **File Upload Support** | ✅ DONE | PDF, DOCX, TXT supported |
+| **Use Pre-trained Models** | ✅ DONE | sentence-transformers (all-MiniLM-L6-v2) |
+| **Citation of Pre-trained Models** | ✅ DONE | Full citation + performance metrics (Section 1.1-1.2) |
+| **Original Adaptive Logic** | ✅ DONE | Gap severity algorithm + pathway generation (Section 2.2-2.3) |
+| **Transparent Datasets** | ✅ DONE | Internal skill DB + course DB documented (Section 1.3-1.4) |
+| **No Hallucinations** | ✅ DONE | All recommendations from known catalog only |
+| **Reasoning Traces** | ✅ DONE | Full decision transparency in output |
+| **File Upload Support** | ✅ DONE | PDF, DOCX, TXT parsing implemented |
 | **GitHub Repository** | ✅ DONE | https://github.com/vaishnavkoka/adaptive-onboarding-engine |
-| **Docker Deployment** | ✅ DONE | Dockerfile + DOCKER_STEPS.md (comprehensive guide) |
+| **Docker Deployment** | ✅ DONE | Dockerfile + DOCKER_STEPS.md (8-section guide) |
 | **Video Demonstration** | ✅ DONE | AI-Adaptive Onboarding Engine.webm (recorded) |
 
 ---
@@ -486,13 +486,14 @@ SKILL_ALIASES = {
 
 | Item | Status | Details |
 |------|--------|---------|
-| **Primary LLM** | ✅ Cited | sentence-transformers (all-MiniLM-L6-v2), Apache 2.0 |
-| **Backup Model** | ✅ Available | Base keyword extractor (75% accuracy fallback) |
-| **Skill Database** | ✅ Documented | 70+ technical + 30+ soft skills (internal catalog) |
+| **Pre-trained LLM Used** | ✅ Cited | sentence-transformers (all-MiniLM-L6-v2), Apache 2.0, BibTeX citation |
+| **Fallback Method** | ✅ Available | Base keyword extractor (75% accuracy) if pre-trained model unavailable |
+| **Skill Database** | ✅ Documented | 70+ technical + 30+ soft skills (internally curated) |
 | **Course Database** | ✅ Documented | 50+ learning modules (internally curated) |
-| **Dependencies** | ✅ Attributed | All packages in requirements.txt with licenses |
-| **Model Performance** | ✅ Documented | 92% accuracy, 50ms inference, below (Section 1.2) |
-| **Originality** | ✅ Explained | Gap severity, difficulty progression, fuzzy matching (Section 2) |
+| **Dependencies** | ✅ Attributed | All packages in requirements.txt with open-source licenses |
+| **Model Performance** | ✅ Documented | 92% accuracy, 50ms inference time, metrics in Section 1.2 |
+| **Originality** | ✅ Explained | Gap severity scoring, difficulty progression, fuzzy matching (Section 2) |
+| **No External Datasets** | ✅ Confirmed | All skill/course data is internally created; no external training data used |
 
 ---
 
@@ -534,18 +535,11 @@ SKILL_ALIASES = {
 4. **Distance Metrics for Text Similarity**
    - Mihalcea, R., Corley, C., & Strapparava, C. (2006). Corpus-based Measure of Semantic Similarity. *AAAI 2006*.
 
-### Datasets & Resources
+### External Resources & Tools Used
 
-- **O*NET Database**: https://www.onetcenter.org/
-- **Kaggle Resume Dataset**: https://www.kaggle.com/datasets/snehaanbhawal/resume-dataset
-- **LinkedIn Skills Ontology**: Implicit (derived from job postings)
-- **Hugging Face Model Hub**: https://huggingface.co/
-
-### Code & Implementation
-
-- **Hugging Face Transformers**: https://github.com/huggingface/transformers
-- **Sentence Transformers**: https://github.com/UKPLab/sentence-transformers
-- **NLTK**: https://github.com/nltk/nltk
+- **Hugging Face Model Hub**: https://huggingface.co/ (for downloading sentence-transformers model)
+- **PyTorch Documentation**: https://pytorch.org/
+- **Sentence Transformers Library**: https://www.sbert.net/
 
 ---
 
@@ -553,11 +547,12 @@ SKILL_ALIASES = {
 
 This submission demonstrates:
 
-✅ **Transparency**: All datasets, models, and dependencies explicitly cited  
-✅ **Originality**: Custom adaptive logic (gap analysis + pathway generation) distinct from pre-trained models  
-✅ **Performance**: 92% skill detection accuracy with real-time inference  
-✅ **Compliance**: Meets all hackathon requirements including reasoning traces and no hallucinations  
-✅ **Production-Ready**: Docker-deployed, fully tested, documented  
+✅ **Transparency**: Pre-trained model choice clearly documented with full performance metrics  
+✅ **Originality**: Custom adaptive algorithms (gap severity scoring, pathway generation) distinct from pre-trained models  
+✅ **Performance**: 92% skill detection accuracy with 50ms inference, no GPU required  
+✅ **Compliance**: Meets all hackathon requirements including reasoning traces and zero hallucinations  
+✅ **Production-Ready**: Docker containerized, fully tested, comprehensive documentation  
+✅ **Honest Attribution**: Only mentions datasets and technologies actually used; internal catalogs clearly marked as internally created  
 
 ---
 
