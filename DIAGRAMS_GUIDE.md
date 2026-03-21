@@ -1,0 +1,513 @@
+# Presentation Diagrams - AI-Adaptive Onboarding Engine
+
+This guide contains 4 high-quality diagrams for the "Architecture & Workflow" slide of your presentation.
+
+---
+
+## 📊 Diagram Overview
+
+| # | Diagram | Focus | Key Update |
+|---|---------|-------|-----|
+| 1 | System Architecture | All Components | ✅ LLM Integration (Ollama, DeepSeek-R1 7B) |
+| 2 | Data Flow Pipeline | Processing Steps | ✅ Dual-Mode Extraction + Fair Scoring |
+| 3 | User Journey (UI/UX) | User Interactions | ✅ Score Breakdown & Color-Coded Interpretation |
+| 4 | Scoring System | Score Calculation | ✅ New: Fair Algorithm with Transparency |
+
+---
+
+## 🚀 What's NEW - LLM Integration
+
+### DeepSeek-R1 7B via Ollama
+- **Mode**: Local LLM inference (privacy-first, no cloud required)
+- **Server**: Ollama on port 11434
+- **Extraction**: Context-aware skill extraction (optional, falls back to keyword mode)
+- **Performance**: 10-15 second inference / 30-second timeout
+- **Architecture**: Integrated in Processing Layer with automatic fallback
+
+### Fair Scoring System (NEW)
+- **Formula**: Base%(Match/Required × 100) + Proficiency Bonus(+3pts/match) + Floor(10pts)
+- **Transparency**: 4-factor breakdown showing exact calculation
+- **Interpretation**: Color-coded meaning:
+  - 🟢 80-100: Excellent Match
+  - 🟡 60-79: Strong Match 
+  - 🟠 40-59: Moderate Match
+  - 🔴 20-39: Entry-Level Match
+  - ⚠️ <20: Early Career Match
+
+### Server Configuration
+- **Port**: Changed from 5000 → 3000 (production-ready)
+- **Host**: 0.0.0.0 (network-accessible)
+- **Debug**: Disabled (production mode)
+
+---
+
+## 📊 Diagram 1: System Architecture
+
+**Title:** System Architecture - AI-Adaptive Onboarding Engine
+
+**Description:** 
+Shows all major components including:
+- Frontend Layer (Web UI)
+- Backend Layer (Flask Server port 3000)
+- **LLM Integration (NEW!)**: Ollama + DeepSeek-R1 7B
+- Processing Layer: Extractors, Fair Scorer, Analyzers
+- AI/ML Models: Transformers, Semantic Matching
+- Output Generation: Breakdown, Interpretation, Visualization
+
+**Key Highlights**:
+- Purple highlight on LLM section (Ollama → DeepSeek-R1 7B)
+- Fair Score Calculator in Processing Layer
+- Breakdown and Interpretation flow to Results
+
+---
+
+## 🌊 Diagram 2: Data Flow Pipeline
+
+**Title:** Data Flow Pipeline - Dual-Mode Skill Extraction
+
+**Description:**
+Shows the complete data journey:
+- File Processing → Dual-Mode Extraction
+- **Keyword Mode**: Fast extraction with fallback
+- **LLM Mode**: Optional context-aware extraction via Ollama (30s timeout)
+- Score Calculation (NEW!) → Score Breakdown → Score Interpretation
+- Semantic Matching → Gap Analysis → Pathway Generation
+- Output: Dashboard, CSV, Reasoning Trace
+
+**Color Coding**:
+- 🟢 Green: LLM processing paths
+- 🔵 Blue: Fast paths, Ollama API
+- 🟡 Yellow: Score calculation & breakdown
+- 🟦 Teal: Score interpretation
+
+---
+
+## 👥 Diagram 3: User Journey (UI/UX)
+
+**Title:** User Journey - AI-Adaptive Onboarding
+
+**Description:**
+User experience flow:
+1. Upload Resume
+2. Upload Job Description
+3. Select Job Category
+4. **Choose Extraction Mode** (NEW!): Fast Keyword or LLM
+5. Click Analyze
+6. View Results
+
+**Results Dashboard**:
+- **Match Score**: 0-100% 
+- **Score Breakdown**: 4 calculation factors (NEW!)
+- **Score Interpretation**: Color-coded meaning (NEW!)
+- Skills Gap: Missing skills list
+- Learning Pathway: Risk-ranked tasks
+- Reasoning Trace: Decision logic
+
+**Actions**:
+- Download CSV Export
+- Copy Pathway
+- Analyze New (Start Over)
+
+**Styling**:
+- 🟦 Blue: LLM mode selection
+- 🟨 Yellow: Score breakdown & breakdown factors
+- 🟦 Teal: Score interpretation logic
+- Color-coded score ranges (Green→Yellow→Orange→Red→Danger)
+
+---
+
+## 📈 Diagram 4: Scoring System Architecture (NEW!)
+
+**Title:** Scoring System - Fair Algorithm with Transparency
+
+**Description:**
+Complete breakdown of the new scoring system:
+- **Input**: Match analysis data (Resume & Job skills)
+- **Base Calculation**: (Matching Skills / Required Skills) × 100
+- **Proficiency Bonus**: +3 points per skill where resume level ≥ job level
+- **Minimum Floor**: 10 points if any skills detected
+- **Final Calculation**: Base% + Bonus, capped at 100
+- **Score Breakdown**: Shows your_skills, required_skills, matching_count, proficiency_matches, scoring_factors
+- **Score Interpretation**: Color-coded meaning (🟢🟡🟠🔴⚠️)
+- **Output**: Final Score + Breakdown + Interpretation
+
+**Color Coding**:
+- 🟧 Orange: Scoring Engine core
+- 🔵 Light Blue: Base Calculation
+- 🟣 Purple: Proficiency Bonus  
+- 🟢 Green: Minimum Floor
+- 🔴 Pink: Final Calculation
+- 🟨 Yellow: Score Breakdown
+- 🟩 Light Green: Score Interpretation
+- 🟦 Dark Green: Output
+
+---
+
+## 🎨 How to Create High-Quality JPEG/PNG
+
+### Option A: Online Mermaid Editor (Easiest, Recommended)
+1. Go to: https://mermaid.live/
+2. Paste the Mermaid code from the corresponding .mmd file
+3. Click "Export" → "Download as SVG/PNG/JPEG"
+4. Adjust size and quality in export dialog
+
+### Option B: Using Local Tools
+```bash
+# Install mermaid-cli (requires Node.js)
+npm install -g @mermaid-js/mermaid-cli
+
+# Create JPEG from markdown (with dark theme)
+mmdc -i diagram.mmd -o diagram.jpeg -t dark
+
+# Create PNG with custom width
+mmdc -i diagram.mmd -o diagram.png -w 1920
+```
+
+### Option C: VS Code + Screenshot
+1. Install "Markdown Preview Mermaid" or "Markdown Preview Enhanced" extension
+2. Open .mmd file or markdown containing diagram
+3. Right-click → "Preview" or "Open Preview"
+4. Screenshot at desired resolution
+5. Crop to remove UI elements
+
+---
+
+## 📋 Recommended Ordering for Presentation
+
+**Slide 1: Architecture Overview**
+- Present Diagram 1 (System Architecture)
+- Discuss components, LLM integration, port 3000
+
+**Slide 2: Data Processing**
+- Present Diagram 2 (Data Flow)
+- Show dual-mode extraction, scoring pipeline, outputs
+
+**Slide 3: User Experience**
+- Present Diagram 3 (UI/UX Journey)
+- Walk through user interactions, LLM mode selection
+
+**Slide 4: Intelligent Scoring**
+- Present Diagram 4 (Scoring System)
+- Explain fair algorithm, transparency, color coding
+
+---
+
+## 🔧 Technical Specifications
+
+### Diagram Files Location
+```
+/diagrams/
+├── 1_system_architecture.mmd (✅ Updated with LLM)
+├── 1_system_architecture.html
+├── 1_system_architecture.png
+├── 2_data_flow.mmd (✅ Updated with scoring)
+├── 2_data_flow.html
+├── 2_data_flow.png
+├── 3_ui_ux_logic.mmd (✅ Updated with score breakdown)
+├── 3_ui_ux_logic.html
+├── 3_ui_ux_logic.png
+├── 4_scoring_architecture.mmd (✨ NEW!)
+└── convert.js
+```
+
+### Git History
+- ✅ Latest: Fair Scoring Algorithm Implementation + LLM Integration
+- ✅ Diagrams: Updated to reflect all recent changes
+- ✅ Documentation: This DIAGRAMS_GUIDE.md
+
+---
+
+## ⭐ Key Improvements This Update
+
+✅ **LLM Integration**: DeepSeek-R1 7B via Ollama with automatic fallback
+✅ **Fair Scoring**: Formula-based, transparent, color-coded interpretation
+✅ **Score Breakdown**: Users see exactly how score calculated (4 factors)
+✅ **Production Ready**: Flask on port 3000, 0.0.0.0 host
+✅ **Dual-Mode Extraction**: Fast keyword mode + optional LLM mode
+✅ **Complete Diagrams**: All 4 diagrams synchronized with implementation
+    end
+    
+    subgraph Backend["⚙️ Backend Layer"]
+        Flask["Flask Server<br/>Port 5000"]
+        Processor["Request Processor<br/>Route Handler"]
+    end
+    
+    subgraph Processing["🧠 Processing Layer"]
+        Resume["Resume Extractor<br/>PDF/DOCX/TXT"]
+        JobDesc["Job Description<br/>Parser"]
+        SkillExt["Skill Extraction<br/>Keyword + LLM"]
+        GapAnalyzer["Gap Analyzer<br/>Risk Assessment"]
+    end
+    
+    subgraph Models["🤖 AI/ML Models"]
+        SentenceTransformer["sentence-transformers<br/>Semantic Matching"]
+        Transformers["transformers<br/>NLP Pipeline"]
+        Catalog["Job Category<br/>Catalog 24x"]
+    end
+    
+    subgraph Output["📈 Output Generation"]
+        PathwayGen["Pathway Generator<br/>Risk-Based Ordering"]
+        Visualization["Visualization<br/>Charts & Graphs"]
+        CSV["CSV Export<br/>Results File"]
+    end
+    
+    UI -->|Upload Files| FileUpload
+    FileUpload -->|Send Data| Flask
+    Flask -->|Route Request| Processor
+    Processor -->|Extract Resume| Resume
+    Processor -->|Parse Description| JobDesc
+    Resume -->|Text Data| SkillExt
+    JobDesc -->|Job Info| SkillExt
+    SkillExt -->|Skills & Gap Analysis| GapAnalyzer
+    GapAnalyzer -->|Semantic Matching| SentenceTransformer
+    GapAnalyzer -->|NLP Processing| Transformers
+    SentenceTransformer -->|Job Match| Catalog
+    GapAnalyzer -->|Generate Pathway| PathwayGen
+    PathwayGen -->|Ranking| Visualization
+    Visualization -->|Format Output| CSV
+    Visualization -->|Display Results| Results
+    CSV -->|Download| Results
+    
+    style Frontend fill:#e1f5ff
+    style Backend fill:#fff3e0
+    style Processing fill:#f3e5f5
+    style Models fill:#e8f5e9
+    style Output fill:#fce4ec
+```
+
+---
+
+## 🖼️ Diagram 2: Data Flow
+
+**Title:** Data Flow - Input to Output Processing
+
+**Description:**
+Shows how data moves through the system from inputs to outputs:
+1. Resume + Job Description Input
+2. Text Extraction & Processing
+3. Dual-mode Skill Extraction (Keyword + LLM)
+4. Semantic Matching & Gap Analysis
+5. Risk Assessment & Pathway Generation
+6. Output visualization and export
+
+```mermaid
+graph LR
+    A["📥 INPUT<br/>Resume + Job Description"] --> B["📄 File Processing<br/>Extract Text"]
+    
+    B --> C["🔍 Skill Extraction<br/>Dual-Mode"]
+    
+    C --> D["🎯 Keyword-Based<br/>Extraction"]
+    C --> E["🤖 LLM-Based<br/>Extraction"]
+    
+    D --> F["📊 Merge Results<br/>Deduplicate"]
+    E --> F
+    
+    F --> G["🔗 Semantic Matching<br/>Vector Similarity"]
+    
+    G --> H["⚖️ Gap Analysis<br/>Missing Skills"]
+    
+    H --> I["⭐ Risk Assessment<br/>Priority Scoring"]
+    
+    I --> J["📈 Pathway Generation<br/>Risk-Based Ordering"]
+    
+    J --> K["⏱️ Time Estimation<br/>Learning Hours"]
+    
+    K --> L["📤 OUTPUT GENERATION"]
+    
+    L --> M["📊 Dashboard View<br/>Match Score & Gap"]
+    L --> N["📋 CSV Export<br/>Detailed Results"]
+    L --> O["🧠 Reasoning Trace<br/>Decision Logic"]
+    
+    style A fill:#c8e6c9
+    style B fill:#bbdefb
+    style C fill:#ffe0b2
+    style D fill:#fff9c4
+    style E fill:#fff9c4
+    style F fill:#b3e5fc
+    style G fill:#e1bee7
+    style H fill:#f8bbd0
+    style I fill:#ffccbc
+    style J fill:#d1c4e9
+    style K fill:#c5cae9
+    style L fill:#b2dfdb
+    style M fill:#a5d6a7
+    style N fill:#a5d6a7
+    style O fill:#a5d6a7
+```
+
+---
+
+## 🖼️ Diagram 3: UI/UX Logic
+
+**Title:** UI/UX Logic - User Journey & Interaction Flow
+
+**Description:**
+Complete user journey from landing on the application to getting results:
+1. Welcome screen
+2. Resume upload
+3. Job description upload
+4. Job category selection
+5. Analysis trigger
+6. Processing display
+7. Results dashboard with 4 cards
+8. Export/Share/Retry actions
+
+```mermaid
+graph TD
+    Start["🚀 User Arrives<br/>at Application"]
+    
+    Start --> Step1["📋 Step 1: Upload Resume<br/>Choose PDF/DOCX/TXT"]
+    
+    Step1 --> Step1a{Resume<br/>Uploaded?}
+    Step1a -->|No| Step1
+    Step1a -->|Yes| Step2
+    
+    Step2["📋 Step 2: Upload Job Description<br/>Paste or Upload File"]
+    
+    Step2 --> Step2a{Job Description<br/>Provided?}
+    Step2a -->|No| Step2
+    Step2a -->|Yes| Step3
+    
+    Step3["🎯 Step 3: Select Job Category<br/>Choose from 24 Categories"]
+    
+    Step3 --> Step4["🔘 Click 'Analyze Skills'<br/>Start Processing"]
+    
+    Step4 --> Processing["⏳ Processing...<br/>Extracting & Matching Skills"]
+    
+    Processing --> Results["✅ Results Ready!"]
+    
+    Results --> Display["📊 Dashboard Display"]
+    
+    Display --> Card1["📈 Match Score Card<br/>0-100% Match"]
+    Display --> Card2["📋 Skills Gap Card<br/>Missing Skills List"]
+    Display --> Card3["🎓 Learning Pathway<br/>Risk-Ranked Tasks"]
+    Display --> Card4["🧠 Reasoning Trace<br/>How Decision Made"]
+    
+    Card1 --> Actions["⚙️ User Actions"]
+    Card2 --> Actions
+    Card3 --> Actions
+    Card4 --> Actions
+    
+    Actions --> Act1["📥 Download CSV<br/>Export Results"]
+    Actions --> Act2["📋 Copy Pathway<br/>Share with Team"]
+    Actions --> Act3["🔄 Analyze New<br/>Start Over"]
+    
+    Act1 --> End["✨ Session Complete"]
+    Act2 --> End
+    Act3 --> Step1
+    
+    style Start fill:#81c784
+    style Step1 fill:#64b5f6
+    style Step2 fill:#64b5f6
+    style Step3 fill:#64b5f6
+    style Step4 fill:#ffa726
+    style Processing fill:#ffb74d
+    style Results fill:#90caf9
+    style Display fill:#80deea
+    style Card1 fill:#a5d6a7
+    style Card2 fill:#a5d6a7
+    style Card3 fill:#a5d6a7
+    style Card4 fill:#a5d6a7
+    style Actions fill:#ffccbc
+    style Act1 fill:#c8e6c9
+    style Act2 fill:#c8e6c9
+    style Act3 fill:#c8e6c9
+    style End fill:#81c784
+```
+
+---
+
+## 🎯 Quick JPEG Conversion Method
+
+**Easiest way (No installation):**
+
+1. **Go to:** https://mermaid.live/
+2. **Copy-paste each diagram code** (above)
+3. **Click the "Export" button** in the top-right
+4. **Select "Download as PNG"** or **"Download as SVG"**
+5. **Convert to JPEG** (optional):
+   - Right-click image → Open with Image Editor
+   - File → Export as JPEG
+
+---
+
+## 🖼️ Diagram Specifications for Presentation
+
+| Aspect | Specification |
+|--------|---------------|
+| **Format** | JPEG (High Quality) |
+| **Resolution** | 1920x1080 or higher |
+| **Color Theme** | Light (as shown above) |
+| **Aspect Ratio** | 16:9 (Standard presentation) |
+| **DPI** | 300 DPI (Print quality) |
+| **File Size** | < 2 MB each |
+
+---
+
+## 📋 How to Use in PowerPoint/Google Slides
+
+1. **Create your presentation** with 5 slides
+   - Slide 1: Solution Overview
+   - Slide 2: Architecture & Workflow (with all 3 diagrams)
+   - Slide 3: Tech Stack & Models
+   - Slide 4: Algorithms & Methodology
+   - Slide 5: Results & Metrics
+
+2. **Insert Diagram Images:**
+   - In PowerPoint: Insert → Pictures → Select JPEG
+   - In Google Slides: Insert → Image → Upload your diagram JPEGs
+
+3. **Size the diagrams:**
+   - Each diagram takes ~1/3 of the slide
+   - Or use one diagram per section
+
+4. **Add captions:**
+   - System Architecture: "5-layer modular design"
+   - Data Flow: "End-to-end processing pipeline"
+   - UI/UX Logic: "Intuitive 3-step user journey"
+
+---
+
+## 💡 Pro Tips
+
+✅ **DO:**
+- Use high-quality JPEG for presentations
+- Keep margins around each diagram
+- Add title above each diagram
+- Use consistent color theme
+
+❌ **DON'T:**
+- Use low resolution images (< 1280x720)
+- Mix light and dark themes
+- Overcrowd the slide with too many diagrams
+- Use white background for projection (hard to see)
+
+---
+
+## 🎨 Alternative Tools to Create JPEG
+
+If you want to edit or regenerate diagrams:
+
+| Tool | Cost | Ease |
+|------|------|------|
+| Mermaid Live | Free | ⭐⭐⭐⭐⭐ |
+| Lucidchart | Paid | ⭐⭐⭐⭐ |
+| Draw.io | Free | ⭐⭐⭐⭐ |
+| Figma | Freemium | ⭐⭐⭐ |
+| Canva | Freemium | ⭐⭐⭐⭐ |
+
+---
+
+## 📞 Support
+
+If diagrams don't render correctly:
+1. Check Mermaid syntax at: https://mermaid.js.org/syntax/
+2. Try a different browser
+3. Clear cache and refresh
+4. Use "View in Full Page" option
+
+---
+
+**Created:** March 2026
+**Project:** AI-Adaptive Onboarding Engine
+**For:** ARTPARK CodeForge Hackathon Presentation

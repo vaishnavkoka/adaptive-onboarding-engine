@@ -26,6 +26,8 @@
 - [Troubleshooting](#troubleshooting)
 - [Deployment](#deployment)
 - [FAQ](#faq)
+- [Additional Documentation Files](#-additional-documentation-files)
+- [Next Steps](#-next-steps)
 
 ---
 
@@ -558,24 +560,86 @@ docker run -p 3000:3000 adaptive-onboarding:latest
 
 ---
 
-## 🎯 Next Steps
+## 📚 Additional Documentation Files
 
-1. **Setup** (5 min): Follow Quick Start above
-2. **Learn**: Review diagrams in `diagrams/` folder
-3. **Use**: Upload resume and job description
-4. **Customize**: Modify categories or scoring if needed
-5. **Deploy**: Follow Deployment section for production
+This project includes comprehensive specialized documentation for deep dives into specific areas:
+
+### Quick Reference
+- **[QUICK_START.md](QUICK_START.md)** - 5-minute setup guide with step-by-step instructions
+- **[DIAGRAMS_GUIDE.md](DIAGRAMS_GUIDE.md)** - Explanation of all 4 system diagrams and architecture
+
+### Technical Details
+- **[SCORING_FORMULA.md](SCORING_FORMULA.md)** - Complete scoring algorithm with 4 worked examples and customization guide
+- **[IMPLEMENTATION_COMPLETE.md](IMPLEMENTATION_COMPLETE.md)** - Full technical specifications, testing checklist, and verification steps
+- **[MEASURED_METRICS_REPORT.md](MEASURED_METRICS_REPORT.md)** - Validation results and performance benchmarks on 7 test cases
+
+### Features & Capabilities
+- **[WHATS_INCLUDED.md](WHATS_INCLUDED.md)** - Complete project inventory with file checklist
+- **[DELIVERABLES_INDEX.md](DELIVERABLES_INDEX.md)** - Master index of all deliverables and quick navigation guide
+- **[FINAL_DELIVERY_SUMMARY.md](FINAL_DELIVERY_SUMMARY.md)** - Project completion status and what makes this special
+
+### LLM & Advanced Features
+- **[LLM_ENHANCEMENT_SUMMARY.md](LLM_ENHANCEMENT_SUMMARY.md)** - Overview of LLM integration benefits
+- **[LLM_IMPLEMENTATION_GUIDE.md](LLM_IMPLEMENTATION_GUIDE.md)** - How to set up and use Ollama + DeepSeek-R1 7B
+- **[PRETRAINED_LLM_SUMMARY.md](PRETRAINED_LLM_SUMMARY.md)** - Details on pretrained model capabilities
+
+### Setup & Configuration
+- **[INSTALLATION_TEST.md](INSTALLATION_TEST.md)** - Verification steps and installation troubleshooting
+- **[DOCKER_STEPS.md](DOCKER_STEPS.md)** - Docker containerization and deployment instructions
+
+### Documentation & Compliance
+- **[DOCUMENTATION_SUMMARY.md](DOCUMENTATION_SUMMARY.md)** - Overview of all documentation structure
+- **[DATA_COMPLIANCE_AND_ORIGINALITY.md](DATA_COMPLIANCE_AND_ORIGINALITY.md)** - Data compliance and originality statement
+- **[VALIDATION_SUMMARY.md](VALIDATION_SUMMARY.md)** - Validation methodology and results
+- **[DYNAMIC_MAPPING_FIX.md](DYNAMIC_MAPPING_FIX.md)** - Technical details on skill mapping improvements
+
+### Navigation Guide
+
+| Need | Document |
+|------|----------|
+| **Quick setup** | [QUICK_START.md](QUICK_START.md) |
+| **Understand architecture** | [DIAGRAMS_GUIDE.md](DIAGRAMS_GUIDE.md) |
+| **Deep dive into scoring** | [SCORING_FORMULA.md](SCORING_FORMULA.md) |
+| **Full specifications** | [IMPLEMENTATION_COMPLETE.md](IMPLEMENTATION_COMPLETE.md) |
+| **Performance metrics** | [MEASURED_METRICS_REPORT.md](MEASURED_METRICS_REPORT.md) |
+| **Setup LLM** | [LLM_IMPLEMENTATION_GUIDE.md](LLM_IMPLEMENTATION_GUIDE.md) |
+| **Docker deployment** | [DOCKER_STEPS.md](DOCKER_STEPS.md) |
+| **See all files** | [DELIVERABLES_INDEX.md](DELIVERABLES_INDEX.md) |
+| **Project status** | [FINAL_DELIVERY_SUMMARY.md](FINAL_DELIVERY_SUMMARY.md) |
 
 ---
 
-## 📞 Support Resources
+## 🎯 Next Steps
 
-- **Quick Setup**: See "Quick Start" section above
-- **Detailed Guide**: See "Usage Guide" section
-- **Scoring Details**: See "Scoring Algorithm" section
-- **Architecture**: See `diagrams/` folder
-- **Troubleshooting**: See "Troubleshooting" section
-- **Additional Docs**: Check project folder for 9+ complementary guides
+1. **Quick setup** (5 min): Follow [QUICK_START.md](QUICK_START.md)
+2. **Understand system**: Review [DIAGRAMS_GUIDE.md](DIAGRAMS_GUIDE.md)
+3. **Learn scoring**: Read [SCORING_FORMULA.md](SCORING_FORMULA.md)
+4. **Use the system**: Upload resume and job description
+5. **Deploy**: Follow Deployment section above or [DOCKER_STEPS.md](DOCKER_STEPS.md)
+
+---
+
+## 📞 Support & Documentation Index
+
+**Start Here (Core Documents)**
+- [README.md](README.md) ← You are here (Main overview)
+- [QUICK_START.md](QUICK_START.md) - 5-minute setup
+- [DIAGRAMS_GUIDE.md](DIAGRAMS_GUIDE.md) - Architecture overview
+
+**Learn More (Detailed Guides)**
+- [SCORING_FORMULA.md](SCORING_FORMULA.md) - How scoring works
+- [IMPLEMENTATION_COMPLETE.md](IMPLEMENTATION_COMPLETE.md) - Full specifications
+- [LLM_IMPLEMENTATION_GUIDE.md](LLM_IMPLEMENTATION_GUIDE.md) - Advanced features
+
+**Reference**
+- [DELIVERABLES_INDEX.md](DELIVERABLES_INDEX.md) - File index
+- [WHATS_INCLUDED.md](WHATS_INCLUDED.md) - Project inventory
+- [MEASURED_METRICS_REPORT.md](MEASURED_METRICS_REPORT.md) - Test results
+
+**Troubleshooting**
+- [INSTALLATION_TEST.md](INSTALLATION_TEST.md) - Setup issues
+- [DOCKER_STEPS.md](DOCKER_STEPS.md) - Container issues
+- See "Troubleshooting" section in README above
 
 ---
 
