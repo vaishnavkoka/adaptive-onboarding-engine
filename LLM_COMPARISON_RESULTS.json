@@ -1,0 +1,23 @@
+{
+  "model": "deepseek-r1:7b",
+  "baseline_accuracy": 0.08518518518518518,
+  "llm_accuracy": 0.4185185185185185,
+  "improvement": 0.3333333333333333,
+  "tests": [
+    {
+      "name": "Finance Analyst (Most Challenging)",
+      "keyword_accuracy": 0.2,
+      "llm_accuracy": 0.6
+    },
+    {
+      "name": "Embedded Systems Engineer (Technical Challenge)",
+      "keyword_accuracy": 0.05555555555555555,
+      "llm_accuracy": 0.05555555555555555
+    },
+    {
+      "name": "Healthcare IT (Domain Terminology)",
+      "keyword_accuracy": 0.0,
+      "llm_accuracy": 0.6
+    }
+  ]
+}

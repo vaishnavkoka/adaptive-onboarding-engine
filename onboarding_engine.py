@@ -8,17 +8,21 @@ import json
 from datetime import datetime
 from adaptive_pathway import SkillGapAnalyzer, AdaptivePathwayGenerator, CourseDatabase
 
-# Try to use LLM-enhanced skill extractor, fall back to base if unavailable
+# Try to use Ollama LLM extractor first, then fall back to base if unavailable
 try:
-    from lightweight_llm_extractor_v2 import get_llm_extractor
-    skill_extractor_instance = get_llm_extractor()
+    from ollama_skill_extractor import OllamaSkillExtractor
+    skill_extractor_instance = OllamaSkillExtractor(model="deepseek-r1:7b")
 except ImportError:
     try:
-        from lightweight_llm_extractor import get_llm_extractor
+        from lightweight_llm_extractor_v2 import get_llm_extractor
         skill_extractor_instance = get_llm_extractor()
     except ImportError:
-        from skill_extractor import SkillExtractor
-        skill_extractor_instance = SkillExtractor()
+        try:
+            from lightweight_llm_extractor import get_llm_extractor
+            skill_extractor_instance = get_llm_extractor()
+        except ImportError:
+            from skill_extractor import SkillExtractor
+            skill_extractor_instance = SkillExtractor()
 
 
 class AdaptiveOnboardingEngine:
