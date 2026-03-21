@@ -59,6 +59,67 @@ Shows all major components including:
 - Fair Score Calculator in Processing Layer
 - Breakdown and Interpretation flow to Results
 
+```mermaid
+graph TB
+    subgraph Frontend["🎨 Frontend Layer"]
+        UI["Web UI<br/>HTML/CSS/JS"]
+        FileUpload["📄 File Upload<br/>Resume • Job Desc"]
+        Results["📊 Results Display<br/>Dashboard"]
+    end
+    
+    subgraph Backend["⚙️ Backend Layer"]
+        Flask["Flask Server<br/>Port 3000"]
+        Processor["Request Processor<br/>Route Handler"]
+    end
+    
+    subgraph Processing["🧠 Processing Layer"]
+        Resume["Resume Extractor<br/>PDF/DOCX/TXT"]
+        JobDesc["Job Description<br/>Parser"]
+        SkillExt["Skill Extraction<br/>Keyword + LLM"]
+        Scorer["Fair Scorer<br/>Transparent Algorithm"]
+        GapAnalyzer["Gap Analyzer<br/>Risk Assessment"]
+    end
+    
+    subgraph Models["🤖 AI/ML Models"]
+        SentenceTransformer["sentence-transformers<br/>Semantic Matching"]
+        Transformers["transformers<br/>NLP Pipeline"]
+        Ollama["Ollama<br/>DeepSeek-R1 7B"]
+        Catalog["Job Category<br/>Catalog 24x"]
+    end
+    
+    subgraph Output["📈 Output Generation"]
+        PathwayGen["Pathway Generator<br/>Risk-Based Ordering"]
+        Visualization["Visualization<br/>Charts & Graphs"]
+        CSV["CSV Export<br/>Results File"]
+    end
+    
+    UI -->|Upload Files| FileUpload
+    FileUpload -->|Send Data| Flask
+    Flask -->|Route Request| Processor
+    Processor -->|Extract Resume| Resume
+    Processor -->|Parse Description| JobDesc
+    Resume -->|Text Data| SkillExt
+    JobDesc -->|Job Info| SkillExt
+    SkillExt -->|Skills| Scorer
+    SkillExt -->|Optional LLM| Ollama
+    Ollama -->|Context-Aware| Scorer
+    Scorer -->|Fair Score| GapAnalyzer
+    GapAnalyzer -->|Semantic Matching| SentenceTransformer
+    GapAnalyzer -->|NLP Processing| Transformers
+    SentenceTransformer -->|Job Match| Catalog
+    GapAnalyzer -->|Generate Pathway| PathwayGen
+    PathwayGen -->|Ranking| Visualization
+    Visualization -->|Format Output| CSV
+    Visualization -->|Display Results| Results
+    CSV -->|Download| Results
+    
+    style Frontend fill:#e1f5ff
+    style Backend fill:#fff3e0
+    style Processing fill:#f3e5f5
+    style Models fill:#e8f5e9
+    style Output fill:#fce4ec
+```
+
 ---
 
 ## 🌊 Diagram 2: Data Flow Pipeline
