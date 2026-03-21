@@ -408,6 +408,18 @@ analysis = engine.analyze_resume_and_job(
     sample_resume, sample_job, "ENGINEERING", 12
 )
 ```
+## Screenshots
+<img width="966" height="964" alt="image" src="https://github.com/user-attachments/assets/e2b99612-f17c-4969-8867-345a2107e719" />
+<img width="981" height="954" alt="image" src="https://github.com/user-attachments/assets/273604d8-9f48-46be-860f-79c43815b2fb" />
+<img width="967" height="712" alt="image" src="https://github.com/user-attachments/assets/75d4afae-d0b1-4cd3-b1b3-a65361afa9f8" />
+<img width="967" height="712" alt="image" src="https://github.com/user-attachments/assets/f3f1b652-91f9-4e05-8d14-4e28cc8361a4" />
+<img width="966" height="771" alt="image" src="https://github.com/user-attachments/assets/cf4ca250-6b35-414f-b217-1ef3619c2928" />
+<img width="990" height="881" alt="image" src="https://github.com/user-attachments/assets/8e99e7f0-07fe-48be-945e-5a44e7b06795" />
+
+
+
+
+
 
 ## Contributing
 
